@@ -66,12 +66,29 @@ std::unique_ptr<LogSink> switchToAsync()
 {
     logger = std::make_shared<AsyncLogger>(); // Runtime change allowed!!
     logger->addBuffer(std::make_unique<ConsoleOutLogBuffer>("TEST"));
-    std::static_pointer_cast<AsyncLogger>(logger)->spawnThread();
 
-    return logger->createSink("TEST_ASYNC");
+    auto async = std::static_pointer_cast<AsyncLogger>(logger);
+
+    std::cout << "Spawning thread to log" << std::endl;
+    async->spawnThread();
+
+    int timeout = 0;
+    while (!async->isInternalThreadAlive())
+    {
+        if (timeout == 3)
+        {
+            std::cout << "Ran out of time for the creation of the log thread!!" << std::endl;
+            return nullptr;
+        }
+
+        timeout++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+
+    return logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
 }
 
-void testAsync(LogSink* sink)
+void testAsync(LogSink *sink)
 {
     std::thread th1(threadLog, sink);
     std::thread th2(threadLog, sink);
@@ -84,36 +101,26 @@ void testAsync(LogSink* sink)
     th4.join();
 }
 
-/*
-void testRuntimeError()
+void testRuntimeError(LogSink *errorSink, LogSink *debugSink)
 {
-    EZLOGGER_LOG_RUNTIME_ERROR(
-        logWorker, { throw std::runtime_error("Test C++ exception!"); });
+    EZLOGGER_LOG_TRY_CATCH(errorSink, { throw std::runtime_error("Test C++ exception!"); });
 
-    auto msg = std::make_unique<LogMessage>("");
-    msg->setPrefix("RUNTIME", LogMessage::Color::GREEN);
-    msg->green("std::runtime_error Logged successfully!");
-    logWorker->log(std::move(msg));
-    logWorker->flush();
+    LogMessage msg = LogMessage("std::runtime_error Logged successfully!");
+    debugSink->pushLog(msg);
 }
 
-void testSignalLogger()
+void testSignalLogger(ExceptionLogger *exceptionLogger, LogSink *debugSink)
 {
-    logWorker->attachSignalLogger();
+    exceptionLogger->attachSignalLogger();
     std::raise(SIGINT);
-    logWorker->detachSignalLogger();
+    exceptionLogger->detachSignalLogger();
 
-    auto msg = std::make_unique<LogMessage>("");
-    msg->setPrefix("SIGNAL", LogMessage::Color::GREEN);
-    msg->green("SIGINT Logged successfully!");
-    logWorker->log(std::move(msg));
-    logWorker->flush();
+    LogMessage msg = LogMessage("Signal Logged successfully!");
+    debugSink->pushLog(msg);
 }
-*/
 
-/*
 #ifdef EZLIB_WORKING_WINDOWS
-void testVEHLogger()
+void testVEHLogger(ExceptionLogger *exceptionLogger, LogSink *debugSink)
 {
     auto fix = [](EXCEPTION_POINTERS *exceptionInfo) -> LONG {
         if (exceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_INT_DIVIDE_BY_ZERO)
@@ -126,63 +133,56 @@ void testVEHLogger()
         return EXCEPTION_CONTINUE_SEARCH; // Should make the program crash...
     };
     auto vehHandle = AddVectoredExceptionHandler(0, fix); // Add a handler to fix the exp.
-    logWorker->attachVehLogger();
+    exceptionLogger->attachWindowsLogger();
 
     asm("push %rbx;");
     asm("push %rdx;");
     asm("push %rax;");
 
     asm("xor %ebx, %ebx;"); // Se divisor to 0, we don't care about dividend.
-    asm("idiv %ebx;"); // Ensure compiler produces the instruction we want (size 2).
+    asm("idiv %ebx;");      // Ensure compiler produces the instruction we want (size 2).
 
     asm("pop %rax;");
     asm("pop %rdx;");
     asm("pop %rbx;");
 
-    logWorker->detachVehLogger();
+    exceptionLogger->detachWindowsLogger();
     RemoveVectoredExceptionHandler(vehHandle); // Remove the handler used to fix the exp.
 
-    auto msg = std::make_unique<LogMessage>("");
-    msg->setPrefix("VEH", LogMessage::Color::GREEN);
-    msg->green("EXCEPTION_INT_DIVIDE_BY_ZERO Logged successfully!");
-    logWorker->log(std::move(msg));
-    logWorker->flush();
-}
-
-void testUEFLogger()
-{
-    logWorker->attachUefLogger();
-    logWorker->detachUefLogger();
-    auto msg = std::make_unique<LogMessage>("");
-    msg->setPrefix("UEF", LogMessage::Color::GREEN);
-    msg->green("UEF handler attached and detached successfully!");
-    logWorker->log(std::move(msg));
-    logWorker->flush();
+    LogMessage msg = LogMessage("Windows exception logged successfully!");
+    debugSink->pushLog(msg);
 }
 #endif
- */
 
 /**
  * @TEST These tests must be checked manually.
  */
 int main()
 {
-    logger = std::make_shared<SyncLogger>();
-    logger->addBuffer(std::make_unique<ConsoleOutLogBuffer>("TEST"));
+    try
+    {
+        logger = std::make_shared<SyncLogger>();
+        logger->addBuffer(std::make_unique<ConsoleOutLogBuffer>("TEST"));
 
-    std::unique_ptr<LogSink> testSink = logger->createSink(LogSegment("TEST_SYNC").colorize(Colors::red));
+        std::unique_ptr<LogSink> testSink = logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
+        std::unique_ptr<ExceptionLogger> exceptionSink =
+            logger->createSink<ExceptionLogger>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
 
-    testSync(testSink.get());
-    testSink = switchToAsync();
-    testAsync(testSink.get());
-    /*
-    testRuntimeError();
-    testSignalLogger();
+        testSync(testSink.get());
+        testSink = switchToAsync();
+        testAsync(testSink.get());
+        testRuntimeError(exceptionSink.get(), testSink.get());
+        testSignalLogger(exceptionSink.get(), testSink.get());
 
 #ifdef EZLIB_WORKING_WINDOWS
-    testVEHLogger();
-    testUEFLogger();
-#endif*/
+        testVEHLogger(exceptionSink.get(), testSink.get());
+#endif
+    }
+    catch (std::runtime_error err)
+    {
+        std::cout << "ERROR RECEIVED DURING TESTS: " << err.what() << std::endl;
+        return -1;
+    }
 
     return 0;
 }

@@ -2,14 +2,15 @@
 #define EZLOGGER_LOGSINK_H
 
 #include "Common.h"
-#include "ILogger.h"
 #include "LogMessage/LogMessage.h"
+#include "ILogSink.h"
+#include "ILogger.h"
 
 /**
- * Represents a sink of log messages. At the moment sink only sets the prefix of the log messages sent to them. But its
+ * Represents a basic sink of log messages. At the moment sink only sets the prefix of the log messages sent to them. But its
  * functionality might be augmented in a future.
  */
-class LogSink
+class LogSink : public ILogSink
 {
   public:
     /**
@@ -29,11 +30,10 @@ class LogSink
      * @param msg
      * @return bool
      */
-    [[nodiscard]] bool pushLog(const LogMessage &msg) const;
+    bool pushLog(const LogMessage &msg) override;
 
   private:
-    ILogger *m_logger; // Used by this sink where to send the log to.
-    LogSegment m_prefix;
+    std::mutex m_mutex; // Make this class thread-safe by default.
 };
 
 #endif // EZLOGGER_LOGSINK_H

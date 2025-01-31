@@ -40,8 +40,8 @@ class AsyncLogger : public Logger
 
     /**
      * @PRE Called by the logging thread.
-     * Writes the first message of the queue, taking account of the mutex, to the out buffers ONLY if working is set to
-     * true. Returns true if succeeded and wrote the message or there weren't any messages.
+     * Writes the first message of the queue, blocking the mutex, to the out buffers ONLY if working is set to
+     * true. Returns true if succeeded and wrote the message, there weren't any messages or working is set to false.
      * @param logger
      * @return bool
      */
@@ -56,26 +56,18 @@ class AsyncLogger : public Logger
     [[nodiscard]] bool pushLog(std::unique_ptr<LogMessage> message) override;
 
     /**
-     * @PRE This instance of the logger will be alive while this thread is alive.
-     * Spawns, if possible and not already spawned, an std::thread and returns true if succeeded. If working is set to
-     * false, the next time the thread function runs it will exit and kill the thread.
-     * @return bool
-     */
-    [[nodiscard]] bool spawnThread();
-
-    /**
      * Sets the working state of the async logger.
      * @param state
      */
     void setWorking(bool state);
 
     /**
-     * Creates a sink with the given prefix.
-     * @param prefix
-     * @return std::unique_ptr<class LogSink>
+     * @PRE This instance of the logger will be alive while this thread is alive.
+     * Spawns, if possible and not already spawned, an std::thread. If working is set to false, the next time the thread
+     * function runs it will exit and kill the thread.
      */
-    [[nodiscard]] std::unique_ptr<LogSink> createLogSink(const LogSegment &prefix) override;
-
+    void spawnThread();
+    
   private:
     /**
      * Retrieves the first message of the queue (if any) and removes it from the queue.

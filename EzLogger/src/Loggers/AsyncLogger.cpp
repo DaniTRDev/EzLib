@@ -7,6 +7,10 @@ AsyncLogger::AsyncLogger() : m_isInternalThreadAlive(false), m_working(true)
 AsyncLogger::~AsyncLogger()
 {
     m_working = false;
+    
+    if (m_isInternalThreadAlive)
+        m_thread.join();
+
     m_outBuffers.clear();
 }
 
@@ -39,7 +43,7 @@ bool AsyncLogger::log(AsyncLogger *logger)
     std::scoped_lock lock(logger->m_mutex); // Locks mutex.
 
     if (!logger->isWorking())
-        return false;
+        return true;
 
     // If queue is empty, the check will fail and the for will not be executed.
     bool result = true;
@@ -57,12 +61,12 @@ bool AsyncLogger::pushLog(std::unique_ptr<LogMessage> message)
     return true;
 }
 
-bool AsyncLogger::spawnThread()
+void AsyncLogger::spawnThread()
 {
-    std::scoped_lock lock(m_mutex);
+    std::unique_lock lock(m_mutex);
 
     if (m_isInternalThreadAlive)
-        return true; // Only allow 1 instance of the thread to be created.
+        return; // Only allow 1 instance of the thread to be created.
 
     static auto threadFunc = [](AsyncLogger *logger) {
         logger->m_isInternalThreadAlive = true;
@@ -76,19 +80,14 @@ bool AsyncLogger::spawnThread()
         logger->m_isInternalThreadAlive = false;
     };
 
+    lock.unlock(); // Unlock the mutex so the newly created thread can use it.
+
     m_thread = std::thread(threadFunc, this);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Wait until out thread has started.
-    return m_isInternalThreadAlive;
 }
 
 void AsyncLogger::setWorking(bool state)
 {
     m_working = state;
-}
-
-std::unique_ptr<LogSink> AsyncLogger::createLogSink(const LogSegment &prefix)
-{
-    return std::make_unique<LogSink>(this, prefix);
 }
 
 std::unique_ptr<LogMessage> AsyncLogger::getFirstMessage()

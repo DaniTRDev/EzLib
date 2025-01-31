@@ -1,7 +1,7 @@
 #ifndef EZLOGGER_LOGMESSAGE_H
 #define EZLOGGER_LOGMESSAGE_H
 
-#include "Common.h"
+#include "../../../Common/Common.h"
 #include "LogSegment.h"
 
 /**

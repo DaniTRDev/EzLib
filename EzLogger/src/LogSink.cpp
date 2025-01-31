@@ -1,7 +1,10 @@
 #include "LogSink.h"
 
-LogSink::LogSink(ILogger *logger, const LogSegment &prefix) : m_logger(logger), m_prefix(prefix)
+LogSink::LogSink(ILogger *logger, const LogSegment &prefix)
 {
+    // Set protected members of ILogSink.
+    this->m_logger = logger;
+    this->m_prefix = prefix;
 }
 
 LogSink::~LogSink()
@@ -9,8 +12,10 @@ LogSink::~LogSink()
     m_logger = nullptr;
 }
 
-bool LogSink::pushLog(const LogMessage &msg) const
+bool LogSink::pushLog(const LogMessage &msg)
 {
+    std::scoped_lock lock(m_mutex);
+
     if (!m_logger)
         return false;
 

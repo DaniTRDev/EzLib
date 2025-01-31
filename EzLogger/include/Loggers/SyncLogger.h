@@ -11,13 +11,14 @@ class SyncLogger : public Logger
      * @param message
      */
     [[nodiscard]] bool pushLog(std::unique_ptr<LogMessage> message) override;
-
+    
     /**
-     * Creates a sink with the given prefix.
-     * @param prefix
-     * @return std::unique_ptr<class LogSink>
+     * Switches given log from Sync to Async. It sets the out buffers of the new logger with the ones in this,
+     * same for sinks.
+     * @param sync
+     * @return
      */
-    [[nodiscard]] std::unique_ptr<LogSink> createLogSink(const LogSegment &prefix) override;
+    [[nodiscard]] std::unique_ptr<class AsyncLogger> switchToAsync(std::unique_ptr<SyncLogger> sync);
 };
 
 #endif // EZLOGGER_SYNCLOGGER_H

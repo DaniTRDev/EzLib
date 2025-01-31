@@ -1,8 +1,8 @@
 #include "Logger.h"
 
-std::unique_ptr<LogSink> Logger::createSink(const LogSegment &prefix)
+Logger::~Logger()
 {
-    return std::make_unique<LogSink>(this, prefix);
+    m_sinks.clear();
 }
 
 bool Logger::pushLog(std::unique_ptr<LogMessage> message)
@@ -26,4 +26,9 @@ bool Logger::pushLog(std::unique_ptr<LogMessage> message)
 void Logger::addBuffer(std::unique_ptr<IOutLogBuffer> buffer)
 {
     m_outBuffers.push_back(std::move(buffer));
+}
+
+const std::vector<std::shared_ptr<LogSink>> &Logger::getSinks() const
+{
+    return m_sinks;
 }

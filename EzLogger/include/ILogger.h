@@ -1,7 +1,7 @@
 #ifndef EZLOGGER_ILOGGER_H
 #define EZLOGGER_ILOGGER_H
 
-#include "Common.h"
+#include "../../Common/Common.h"
 
 /**
  * Interface for a Logger. Each logger must contain its own log function and the output buffers pushLog will be written
@@ -21,13 +21,10 @@ class ILogger
      * @return bool
      */
     virtual bool pushLog(std::unique_ptr<class LogMessage> message) = 0;
-
-    /**
-     * Creates a sink for this logger.
-     * @param prefix
-     * @return std::unique_ptr<LogSink>
-     */
-    virtual std::unique_ptr<class LogSink> createLogSink(const class LogSegment &prefix) = 0;
+    
+  protected:
+    std::vector<std::unique_ptr<class IOutLogBuffer>> m_outBuffers;
+    // Buffers in which each pushLog message will be written into.
 };
 
 #endif // EZLOGGER_ILOGGER_H
