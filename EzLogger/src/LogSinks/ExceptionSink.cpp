@@ -20,7 +20,7 @@ void ExceptionSink::attachSignalLogger()
     static std::map<uint64_t, LogSink *> threadSinks; // Map used to save the corresponding sink for the calling thread.
 
     auto signalLogger = [](int sig) {
-        uint64_t threadId = GetCurrentThreadId();
+        uint64_t threadId = OsDependant::GetThreadId();
         LogMessage msg = LogMessage("");
         msg.append(LogSegment("ERROR: ").colorize(Colors::red));
         msg.append(LogSegment("Received signal: "));
@@ -44,7 +44,7 @@ void ExceptionSink::attachSignalLogger()
     std::signal(SIGSEGV, signalLogger);
     std::signal(SIGTERM, signalLogger);
 
-    threadSinks.insert({GetCurrentThreadId(), this});
+    threadSinks.insert({OsDependant::GetThreadId(), this});
     m_attachedSignalHandler = true;
 }
 

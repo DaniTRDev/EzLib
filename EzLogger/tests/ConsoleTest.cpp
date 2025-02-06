@@ -54,12 +54,12 @@ void threadLog(LogSink *sink)
     {
         auto msg = LogMessage("Log ")
                        .append(LogSegment("{} ", i).colorize(Colors::cyan))
-                       .append(LogSegment("from thread 0x{:X}", GetCurrentThreadId()).colorize(Colors::green));
+                       .append(LogSegment("from thread 0x{:X}", OsDependant::GetThreadId()).colorize(Colors::green));
         sink->pushLog(msg);
         std::this_thread::yield(); // Let other threads execute.
     }
 
-    sink->pushLog(LogMessage(LogSegment("Final log from thread: 0x{:X}", GetCurrentThreadId())));
+    sink->pushLog(LogMessage(LogSegment("Final log from thread: 0x{:X}", OsDependant::GetThreadId())));
 }
 
 void switchToAsync()
@@ -167,7 +167,7 @@ int main()
 #ifdef EZLIB_WORKING_WINDOWS
         std::shared_ptr<WindowsExceptionSink> exceptionSink =
             logger->createSink<WindowsExceptionSink>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
-#elif EZLIB_WORKING_UNIX
+#elif defined(EZLIB_WORKING_UNIX)
         std::shared_ptr<ExceptionSink> exceptionSink =
             logger->createSink<ExceptionSink>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
 #endif

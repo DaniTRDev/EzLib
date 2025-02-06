@@ -18,10 +18,31 @@
 #define EZLIB_DEBUG
 #endif
 
-#if defined(WIN64)
+#if defined(WIN64) || defined(WIN32)
 #define EZLIB_WORKING_WINDOWS
+
+namespace OsDependant
+{
+inline int GetThreadId()
+{
+    return GetCurrentThreadId();
+}
+};
+
 #elif defined(__unix__)
 #define EZLIB_WORKING_UNIX
+#include <unistd.h>
+#include <pthread.h>
+#include <sys/types.h>
+
+namespace OsDependant
+{
+    inline int GetThreadId()
+    {
+        return pthread_self();
+    }
+};
+
 #elif defined(__APPLE__)
 #define EZLIB_WORKING_APPLE
 #endif
