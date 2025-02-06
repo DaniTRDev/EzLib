@@ -21,13 +21,13 @@
 #if defined(WIN64) || defined(WIN32)
 #define EZLIB_WORKING_WINDOWS
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include <Windows.h>
 
 namespace OsDependant
 {
 inline int GetThreadId()
 {
-    return GetCurrentThreadId();
+    return int(GetCurrentThreadId());
 }
 };
 
