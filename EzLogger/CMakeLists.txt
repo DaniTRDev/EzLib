@@ -5,8 +5,9 @@ add_library("EzLogger"
         "src/Loggers/SyncLogger.cpp"
         "src/LogMessage/LogMessage.cpp"
         "src/LogMessage/LogSegment.cpp"
+        "src/LogSinks/ExceptionSink.cpp"
+        "src/LogSinks/WindowsExceptionSink.cpp"
         "src/OutLogBuffers/ConsoleOutLogBuffer.cpp"
-        "src/LogSinks/ExceptionLogger.cpp"
 
         "include/Logger.h"
         "include/EzLogger.h"
@@ -18,8 +19,9 @@ add_library("EzLogger"
         "include/Loggers/SyncLogger.h"
         "include/LogMessage/LogMessage.h"
         "include/LogMessage/LogSegment.h"
+        "include/LogSinks/ExceptionSink.h"
+        "include/LogSinks/WindowsExceptionSink.h"
         "include/OutLogBuffers/ConsoleOutLogBuffer.h"
-        "include/LogSinks/ExceptionLogger.h"
 )
 
 target_include_directories("EzLogger" PUBLIC ${EZLIB_COMMON_PATH})
