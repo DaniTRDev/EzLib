@@ -7,9 +7,17 @@ LogSink::LogSink(ILogger *logger, const LogSegment &prefix)
     this->m_prefix = prefix;
 }
 
+LogSink::LogSink(const LogSink &copy)
+{
+    // Set protected members of ILogSink.
+    this->m_logger = copy.m_logger;
+    this->m_prefix = copy.m_prefix;
+}
+
 LogSink::~LogSink()
 {
     m_logger = nullptr;
+    m_prefix = {""};
 }
 
 bool LogSink::pushLog(const LogMessage &msg)
@@ -23,4 +31,9 @@ bool LogSink::pushLog(const LogMessage &msg)
     copy->setPrefix(m_prefix);
 
     return m_logger->pushLog(std::move(copy));
+}
+
+void LogSink::setLogger(ILogger *logger)
+{
+    m_logger = logger;
 }

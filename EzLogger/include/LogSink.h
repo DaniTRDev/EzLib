@@ -21,6 +21,12 @@ class LogSink : public ILogSink
     LogSink(ILogger *logger, const LogSegment &prefix);
 
     /**
+     * Defines an explicit copy-constructor.
+     * @param copy
+     */
+    LogSink(const LogSink &copy);
+    
+    /**
      * Destroys the object.
      */
     ~LogSink();
@@ -31,6 +37,12 @@ class LogSink : public ILogSink
      * @return bool
      */
     bool pushLog(const LogMessage &msg) override;
+    
+    /**
+     * Sets the logger for this class.
+     * @param logger
+     */
+    void setLogger(class ILogger* logger);
 
   private:
     std::mutex m_mutex; // Make this class thread-safe by default.
