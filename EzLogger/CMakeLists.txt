@@ -1,6 +1,7 @@
 add_library("EzLogger"
         "src/Logger.cpp"
         "src/LogSink.cpp"
+        "src/EzLogger.cpp"
         "src/Loggers/AsyncLogger.cpp"
         "src/Loggers/SyncLogger.cpp"
         "src/LogMessage/LogMessage.cpp"

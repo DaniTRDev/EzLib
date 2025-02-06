@@ -159,9 +159,7 @@ int main()
 {
     try
     {
-        logger = std::make_shared<SyncLogger>();
-        logger->addBuffer(std::make_unique<ConsoleOutLogBuffer>("TEST"));
-
+        logger = EzLogger::createSinkLogger("TEST");
         std::shared_ptr<LogSink> testSink = logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
 
 #ifdef EZLIB_WORKING_WINDOWS
