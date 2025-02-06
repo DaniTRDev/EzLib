@@ -20,6 +20,8 @@
 
 #if defined(WIN64) || defined(WIN32)
 #define EZLIB_WORKING_WINDOWS
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 namespace OsDependant
 {
@@ -49,11 +51,6 @@ namespace OsDependant
 
 #ifdef EZLIB_DEBUG
 #include <iostream>
-#endif
-
-#ifdef EZLIB_WORKING_WINDOWS
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #endif
 
 #endif
