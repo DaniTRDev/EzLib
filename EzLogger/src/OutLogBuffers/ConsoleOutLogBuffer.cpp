@@ -17,19 +17,22 @@ ConsoleOutLogBuffer::~ConsoleOutLogBuffer()
 
 bool ConsoleOutLogBuffer::close()
 {
+#ifdef EZLIB_WORKING_WINDOWS
     SetConsoleMode(HANDLE(m_consoleHandle), m_originalConsoleMode);
     SetConsoleOutputCP(m_originalConsoleOutput);
     SetConsoleTitleA(m_originalConsoleTitle);
-    m_internalBuffer = nullptr;
 
     if (!m_didConsoleExist)
         return FreeConsole(); // Console did not exist before buffer tried opening it.
+#endif
 
+    m_internalBuffer = nullptr;
     return true;
 }
 
 bool ConsoleOutLogBuffer::open()
 {
+#ifdef EZLIB_WORKING_WINDOWS
     /**
      * Some environments emulate the terminal (console) and our calls to GetStdHandle and AllocConsole | AttachConsole
      * will return true but nothing will happen if we write to the classical std::ofstream("CONOUT$")
@@ -54,9 +57,16 @@ bool ConsoleOutLogBuffer::open()
     newMode &= ~(ENABLE_QUICK_EDIT_MODE); // prevent clicking in terminal from suspending our main thread
     SetConsoleMode(HANDLE(m_consoleHandle), newMode);
     SetConsoleOutputCP(CP_UTF8);
-    m_internalBuffer = std::cout.rdbuf(); // Tell our internal buffer to use cout's.
 
-    if (m_consoleTitle.empty() || !SetConsoleTitleA(m_consoleTitle.data()) || !m_internalBuffer)
+    if (m_consoleTitle.empty() || !SetConsoleTitleA(m_consoleTitle.data()))
+    {
+        close();
+        return false;
+    }
+#endif
+
+    m_internalBuffer = std::cout.rdbuf(); // Tell our internal buffer to use cout's.
+    if(!m_internalBuffer)
     {
         close();
         return false;
