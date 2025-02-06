@@ -1,9 +1,9 @@
-#ifndef EZLOGGER_EXCEPTIONLOGGER_H
-#define EZLOGGER_EXCEPTIONLOGGER_H
+#ifndef EZLOGGER_EXCEPTIONSINK_H
+#define EZLOGGER_EXCEPTIONSINK_H
 
 #include "LogSink.h"
 
-class ExceptionLogger : public LogSink
+class ExceptionSink : public LogSink
 {
   public:
     /**
@@ -11,12 +11,12 @@ class ExceptionLogger : public LogSink
      * @param logger
      * @param prefix
      */
-    ExceptionLogger(ILogger *logger, const LogSegment &prefix);
+    ExceptionSink(ILogger *logger, const LogSegment &prefix);
 
     /**
      * Destroys the object.
      */
-    ~ExceptionLogger();
+    ~ExceptionSink();
 
     /**
      * Attaches a signal logger to the current THREAD. IMPORTANT NOTE: If a thread calls attachSignalLogger,
@@ -26,33 +26,12 @@ class ExceptionLogger : public LogSink
     void attachSignalLogger();
 
     /**
-     * Attaches a signal a VEH and an UEF to log exceptions. Linked to the current PROCESS.
-     */
-    void attachWindowsLogger();
-
-    /**
      * Tries to detach signal loggers for this thread.
      */
     void detachSignalLogger();
 
-    /**
-     * Detaches the VEH and UEF logger.
-     */
-    void detachWindowsLogger();
-
-  private:
-    /**
-     * Handler used to catch exceptions in a WINDOWS process.
-     * @param ex
-     * @return LONG
-     */
-    static LONG InternalExceptionLogger(EXCEPTION_POINTERS *ex);
-
   private:
     bool m_attachedSignalHandler;
-    static LogSink *m_internalExceptionLoggerSink;
-    void *m_previousUefHandler;
-    void *m_vehHandler;
 };
 
 #define EZLOGGER_LOG_TRY_CATCH(sink, code)                                                                             \
@@ -68,4 +47,4 @@ class ExceptionLogger : public LogSink
         sink->pushLog(msg);                                                                                            \
     }
 
-#endif // EZLOGGER_EXCEPTIONLOGGER_H
+#endif // EZLOGGER_EXCEPTIONSINK_H
