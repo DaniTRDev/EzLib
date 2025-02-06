@@ -62,11 +62,11 @@ void threadLog(LogSink *sink)
     sink->pushLog(LogMessage(LogSegment("Final log from thread: 0x{:X}", GetCurrentThreadId())));
 }
 
-std::unique_ptr<LogSink> switchToAsync()
+void switchToAsync()
 {
-    logger = std::make_shared<AsyncLogger>(); // Runtime change allowed!!
-    logger->addBuffer(std::make_unique<ConsoleOutLogBuffer>("TEST"));
-
+    auto sync  = std::static_pointer_cast<SyncLogger>(logger);
+    
+    logger = std::move(sync->switchToAsync());
     auto async = std::static_pointer_cast<AsyncLogger>(logger);
 
     std::cout << "Spawning thread to log" << std::endl;
@@ -78,14 +78,12 @@ std::unique_ptr<LogSink> switchToAsync()
         if (timeout == 3)
         {
             std::cout << "Ran out of time for the creation of the log thread!!" << std::endl;
-            return nullptr;
+            return;
         }
 
         timeout++;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
-
-    return logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
 }
 
 void testAsync(LogSink *sink)
@@ -109,7 +107,7 @@ void testRuntimeError(LogSink *errorSink, LogSink *debugSink)
     debugSink->pushLog(msg);
 }
 
-void testSignalLogger(ExceptionLogger *exceptionLogger, LogSink *debugSink)
+void testSignalLogger(ExceptionSink *exceptionLogger, LogSink *debugSink)
 {
     exceptionLogger->attachSignalLogger();
     std::raise(SIGINT);
@@ -120,7 +118,7 @@ void testSignalLogger(ExceptionLogger *exceptionLogger, LogSink *debugSink)
 }
 
 #ifdef EZLIB_WORKING_WINDOWS
-void testVEHLogger(ExceptionLogger *exceptionLogger, LogSink *debugSink)
+void testVEHLogger(WindowsExceptionSink *exceptionLogger, LogSink *debugSink)
 {
     auto fix = [](EXCEPTION_POINTERS *exceptionInfo) -> LONG {
         if (exceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_INT_DIVIDE_BY_ZERO)
@@ -164,12 +162,18 @@ int main()
         logger = std::make_shared<SyncLogger>();
         logger->addBuffer(std::make_unique<ConsoleOutLogBuffer>("TEST"));
 
-        std::unique_ptr<LogSink> testSink = logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
-        std::unique_ptr<ExceptionLogger> exceptionSink =
-            logger->createSink<ExceptionLogger>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
+        std::shared_ptr<LogSink> testSink = logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
 
+#ifdef EZLIB_WORKING_WINDOWS
+        std::shared_ptr<WindowsExceptionSink> exceptionSink =
+            logger->createSink<WindowsExceptionSink>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
+#elif EZLIB_WORKING_UNIX
+        std::shared_ptr<ExceptionSink> exceptionSink =
+            logger->createSink<ExceptionSink>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
+#endif
+        
         testSync(testSink.get());
-        testSink = switchToAsync();
+        switchToAsync();
         testAsync(testSink.get());
         testRuntimeError(exceptionSink.get(), testSink.get());
         testSignalLogger(exceptionSink.get(), testSink.get());
