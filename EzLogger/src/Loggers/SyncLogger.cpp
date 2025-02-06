@@ -7,9 +7,10 @@ bool SyncLogger::pushLog(std::unique_ptr<LogMessage> message)
     return Logger::pushLog(std::move(message));
 }
 
-std::unique_ptr<class AsyncLogger> SyncLogger::switchToAsync(std::unique_ptr<SyncLogger> sync)
+std::unique_ptr<class AsyncLogger> SyncLogger::switchToAsync()
 {
     std::unique_ptr<class AsyncLogger> async = std::make_unique<class AsyncLogger>();
+    swap(async.get()); // Copy all information to async and clear this.
 
-    return ;
+    return std::move(async);
 }

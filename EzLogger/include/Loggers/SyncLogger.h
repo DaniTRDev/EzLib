@@ -13,12 +13,11 @@ class SyncLogger : public Logger
     [[nodiscard]] bool pushLog(std::unique_ptr<LogMessage> message) override;
     
     /**
-     * Switches given log from Sync to Async. It sets the out buffers of the new logger with the ones in this,
+     * Switches this log from Sync to Async. It sets the out buffers of the new logger with the ones in this,
      * same for sinks.
-     * @param sync
      * @return
      */
-    [[nodiscard]] std::unique_ptr<class AsyncLogger> switchToAsync(std::unique_ptr<SyncLogger> sync);
+    [[nodiscard]] std::unique_ptr<class AsyncLogger> switchToAsync();
 };
 
 #endif // EZLOGGER_SYNCLOGGER_H
