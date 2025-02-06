@@ -52,52 +52,52 @@ template <> struct std::formatter<SimpleColor>
 
 namespace Colors
 {
-static SimpleColor reset = {.color = 0, .modificator = 0};     // Regular Text Color Reset
-static SimpleColor bold = {.color = 1, .modificator = 0};      // Regular Text Bold
-static SimpleColor dim = {.color = 2, .modificator = 0};       // Regular Text Dim
-static SimpleColor italic = {.color = 3, .modificator = 0};    // Regular Text Italic
-static SimpleColor underline = {.color = 4, .modificator = 0}; // Regular Text Underline
-static SimpleColor blink = {.color = 5, .modificator = 0};     // Regular Text Blink
-// static SimpleColor unused = {.color = 6, .modificator = 0};    // UNUSED
-static SimpleColor reverse = {.color = 7, .modificator = 0}; // Regular Text Reverse
-static SimpleColor hidden = {.color = 8, .modificator = 0};  // Regular Text Hidden
-static SimpleColor strike = {.color = 9, .modificator = 0};  // Regular Text Strike
+inline SimpleColor reset = {.color = 0, .modificator = 0};     // Regular Text Color Reset
+inline SimpleColor bold = {.color = 1, .modificator = 0};      // Regular Text Bold
+inline SimpleColor dim = {.color = 2, .modificator = 0};       // Regular Text Dim
+inline SimpleColor italic = {.color = 3, .modificator = 0};    // Regular Text Italic
+inline SimpleColor underline = {.color = 4, .modificator = 0}; // Regular Text Underline
+inline SimpleColor blink = {.color = 5, .modificator = 0};     // Regular Text Blink
+// inline SimpleColor unused = {.color = 6, .modificator = 0};    // UNUSED
+inline SimpleColor reverse = {.color = 7, .modificator = 0}; // Regular Text Reverse
+inline SimpleColor hidden = {.color = 8, .modificator = 0};  // Regular Text Hidden
+inline SimpleColor strike = {.color = 9, .modificator = 0};  // Regular Text Strike
 
-static SimpleColor black = {.color = 0, .modificator = 3};   // Regular Text Color Black
-static SimpleColor red = {.color = 1, .modificator = 3};     // Regular Text Color Red
-static SimpleColor green = {.color = 2, .modificator = 3};   // Regular Text Color Green
-static SimpleColor yellow = {.color = 3, .modificator = 3};  // Regular Text Color Yellow
-static SimpleColor blue = {.color = 4, .modificator = 3};    // Regular Text Color Blue
-static SimpleColor magenta = {.color = 5, .modificator = 3}; // Regular Text Color Magenta
-static SimpleColor cyan = {.color = 6, .modificator = 3};    // Regular Text Color Cyan
-static SimpleColor white = {.color = 7, .modificator = 3};   // Regular Text Color White
+inline SimpleColor black = {.color = 0, .modificator = 3};   // Regular Text Color Black
+inline SimpleColor red = {.color = 1, .modificator = 3};     // Regular Text Color Red
+inline SimpleColor green = {.color = 2, .modificator = 3};   // Regular Text Color Green
+inline SimpleColor yellow = {.color = 3, .modificator = 3};  // Regular Text Color Yellow
+inline SimpleColor blue = {.color = 4, .modificator = 3};    // Regular Text Color Blue
+inline SimpleColor magenta = {.color = 5, .modificator = 3}; // Regular Text Color Magenta
+inline SimpleColor cyan = {.color = 6, .modificator = 3};    // Regular Text Color Cyan
+inline SimpleColor white = {.color = 7, .modificator = 3};   // Regular Text Color White
 
-static SimpleColor brBlack = {.color = 0, .modificator = 9};   // Bright Text Color Black
-static SimpleColor brRed = {.color = 1, .modificator = 9};     // Bright Text Color Red
-static SimpleColor brGreen = {.color = 2, .modificator = 9};   // Bright Text Color Green
-static SimpleColor brYellow = {.color = 3, .modificator = 9};  // Bright Text Color Yellow
-static SimpleColor brBlue = {.color = 4, .modificator = 9};    // Bright Text Color Blue
-static SimpleColor brMagenta = {.color = 5, .modificator = 9}; // Bright Text Color Magenta
-static SimpleColor brCyan = {.color = 6, .modificator = 9};    // Bright Text Color Cyan
-static SimpleColor brWhite = {.color = 7, .modificator = 9};   // Bright Text Color White
+inline SimpleColor brBlack = {.color = 0, .modificator = 9};   // Bright Text Color Black
+inline SimpleColor brRed = {.color = 1, .modificator = 9};     // Bright Text Color Red
+inline SimpleColor brGreen = {.color = 2, .modificator = 9};   // Bright Text Color Green
+inline SimpleColor brYellow = {.color = 3, .modificator = 9};  // Bright Text Color Yellow
+inline SimpleColor brBlue = {.color = 4, .modificator = 9};    // Bright Text Color Blue
+inline SimpleColor brMagenta = {.color = 5, .modificator = 9}; // Bright Text Color Magenta
+inline SimpleColor brCyan = {.color = 6, .modificator = 9};    // Bright Text Color Cyan
+inline SimpleColor brWhite = {.color = 7, .modificator = 9};   // Bright Text Color White
 
-static SimpleColor bgBlack = {.color = 0, .modificator = 4};   // Regular Background Color Black
-static SimpleColor bgRed = {.color = 1, .modificator = 4};     // Regular Background Color Red
-static SimpleColor bgGreen = {.color = 2, .modificator = 4};   // Regular Background Color Green
-static SimpleColor bgYellow = {.color = 3, .modificator = 4};  // Regular Background Color Yellow
-static SimpleColor bgBlue = {.color = 4, .modificator = 4};    // Regular Background Color Blue
-static SimpleColor bgMagenta = {.color = 5, .modificator = 4}; // Regular Background Color Magenta
-static SimpleColor bgCyan = {.color = 6, .modificator = 4};    // Regular Background Color Cyan
-static SimpleColor bgWhite = {.color = 7, .modificator = 4};   // Regular Background Color White
+inline SimpleColor bgBlack = {.color = 0, .modificator = 4};   // Regular Background Color Black
+inline SimpleColor bgRed = {.color = 1, .modificator = 4};     // Regular Background Color Red
+inline SimpleColor bgGreen = {.color = 2, .modificator = 4};   // Regular Background Color Green
+inline SimpleColor bgYellow = {.color = 3, .modificator = 4};  // Regular Background Color Yellow
+inline SimpleColor bgBlue = {.color = 4, .modificator = 4};    // Regular Background Color Blue
+inline SimpleColor bgMagenta = {.color = 5, .modificator = 4}; // Regular Background Color Magenta
+inline SimpleColor bgCyan = {.color = 6, .modificator = 4};    // Regular Background Color Cyan
+inline SimpleColor bgWhite = {.color = 7, .modificator = 4};   // Regular Background Color White
 
-static SimpleColor bgBrBlack = {.color = 0, .modificator = 10};   // Bright Background Color Black
-static SimpleColor bgBrRed = {.color = 1, .modificator = 10};     // Bright Background Color Red
-static SimpleColor bgBrGreen = {.color = 2, .modificator = 10};   // Bright Background Color Green
-static SimpleColor bgBrYellow = {.color = 3, .modificator = 10};  // Bright Background Color Yellow
-static SimpleColor bgBrBlue = {.color = 4, .modificator = 10};    // Bright Background Color Blue
-static SimpleColor bgBrMagenta = {.color = 5, .modificator = 10}; // Bright Background Color Magenta
-static SimpleColor bgBrCyan = {.color = 6, .modificator = 10};    // Bright Background Color Cyan
-static SimpleColor bgBrWhite = {.color = 7, .modificator = 10};   // Bright Background Color White
+inline SimpleColor bgBrBlack = {.color = 0, .modificator = 10};   // Bright Background Color Black
+inline SimpleColor bgBrRed = {.color = 1, .modificator = 10};     // Bright Background Color Red
+inline SimpleColor bgBrGreen = {.color = 2, .modificator = 10};   // Bright Background Color Green
+inline SimpleColor bgBrYellow = {.color = 3, .modificator = 10};  // Bright Background Color Yellow
+inline SimpleColor bgBrBlue = {.color = 4, .modificator = 10};    // Bright Background Color Blue
+inline SimpleColor bgBrMagenta = {.color = 5, .modificator = 10}; // Bright Background Color Magenta
+inline SimpleColor bgBrCyan = {.color = 6, .modificator = 10};    // Bright Background Color Cyan
+inline SimpleColor bgBrWhite = {.color = 7, .modificator = 10};   // Bright Background Color White
 } // namespace Colors
 
 /**
