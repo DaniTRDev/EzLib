@@ -51,6 +51,13 @@ class Logger : public ILogger
     void addBuffer(std::unique_ptr<IOutLogBuffer> buffer);
     
     /**
+     * Swaps this->m_sinks and out buffer with destination. Can be used to clear sinks and logger if called
+     * with an empty vector (Not recommended...).
+     * @param destination
+     */
+    void swap(Logger *destination);
+    
+    /**
      * Returns the vector of created sinks for this logger.
      * @return const std::vector<std::shared_ptr<LogSink>> &
      */
