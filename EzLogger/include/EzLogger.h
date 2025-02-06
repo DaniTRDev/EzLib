@@ -6,7 +6,8 @@
 #include "ILogger.h"
 #include "ILogSink.h"
 
-#include "LogSinks/ExceptionLogger.h"
+#include "LogSinks/ExceptionSink.h"
+#include "LogSinks/WindowsExceptionSink.h"
 
 #include "Loggers/AsyncLogger.h"
 #include "Loggers/SyncLogger.h"
