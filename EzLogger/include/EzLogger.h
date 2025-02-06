@@ -14,4 +14,9 @@
 
 #include "OutLogBuffers/ConsoleOutLogBuffer.h"
 
+namespace EzLogger
+{
+	extern std::unique_ptr<SyncLogger> createSinkLogger(std::string_view consoleTittle);
+};
+
 #endif // EZLOGGER_EZLOGGER_H
