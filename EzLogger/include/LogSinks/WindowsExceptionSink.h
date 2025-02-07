@@ -1,8 +1,8 @@
 #ifndef EZLOGGER_WINDOWSEXCEPTIONSINK_H
 #define EZLOGGER_WINDOWSEXCEPTIONSINK_H
 
-#include "Common.h"
 #include "ExceptionSink.h"
+#include "EzLibCommon.h"
 
 #ifdef EZLIB_WORKING_WINDOWS
 

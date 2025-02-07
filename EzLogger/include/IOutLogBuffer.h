@@ -1,7 +1,7 @@
 #ifndef EZLOGGER_IOUTLOGBUFFER_H
 #define EZLOGGER_IOUTLOGBUFFER_H
 
-#include "../../Common/Common.h"
+#include "EzLibCommon.h"
 #include "LogMessage/LogMessage.h"
 
 /**
