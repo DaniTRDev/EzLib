@@ -110,7 +110,7 @@ class LogSegment
      * Creates the object with the given text.
      * @param text
      */
-    explicit LogSegment(const std::string &text);
+    LogSegment(const std::string &text);
 
     /**
      * Creates the object from the given format (uses std::format).
