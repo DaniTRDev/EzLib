@@ -16,7 +16,7 @@ class LogMessage
      * @param segment
      */
     explicit LogMessage(const LogSegment &segment);
-
+    
     /**
      * Destroys this object.
      */
