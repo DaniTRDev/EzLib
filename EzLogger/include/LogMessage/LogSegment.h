@@ -119,7 +119,7 @@ class LogSegment
      * @param fmt
      * @param args
      */
-    template <typename... Args> LogSegment(const char *fmt, Args &&...args)
+    template <typename... Args> inline LogSegment(const char *fmt, Args &&...args)
     {
         m_text = std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
     }
@@ -137,7 +137,7 @@ class LogSegment
      */
     template <typename... Args>
         requires((std::is_same_v<std::decay_t<Args>, SimpleColor> && ...))
-    LogSegment &colorize(Args &&...colors)
+    inline LogSegment &colorize(Args &&...colors)
     {
         m_colors.reserve(m_colors.size() + sizeof...(Args));
         (m_colors.emplace_back(std::forward<Args>(colors)), ...);
