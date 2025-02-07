@@ -1,5 +1,4 @@
 #include "LogMessage/LogMessage.h"
-// #include "include/LogSink.h"
 
 LogMessage::LogMessage(const LogSegment &content) : m_prefix("")
 {
@@ -56,13 +55,6 @@ std::string LogMessage::getRawMessage() const
 
     return std::move(result); // Avoid unnecessary copies.
 }
-
-/*
-void LogMessage::log(class LogSink *sink)
-{
-    setPrefix(sink->getName(), sink->getColor());
-    sink->log(std::make_unique<LogMessage>(*this));
-}*/
 
 void LogMessage::setPrefix(const LogSegment &prefix)
 {
