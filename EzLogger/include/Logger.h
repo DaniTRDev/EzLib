@@ -17,23 +17,6 @@ class Logger : public ILogger
      * Destroys the object.
      */
     ~Logger();
-    
-    /**
-     * Creates a sink of given type with given arguments. This might be converted into a "SinkFactory" in a future.
-     * IMPORTANT: An ILogger pointer is passed as the FIRST parameter.
-     * @tparam LogSinkT
-     * @tparam SinkArgs
-     * @param args
-     * @return std::shared_ptr<LogSinkT>
-     */
-    template <typename LogSinkT, typename... SinkArgs>
-        requires std::is_base_of_v<LogSink, LogSinkT>
-    [[nodiscard]] std::shared_ptr<LogSinkT> createSink(SinkArgs &&...args)
-    {
-        std::shared_ptr<LogSinkT> ptr = std::make_shared<LogSinkT>(this, std::forward<SinkArgs>(args)...);
-        m_sinks.push_back(ptr);
-        return ptr;
-    }
 
     /**
      * Sends the log to the out buffers. If a write to any of the buffers fail, function will return false. Writing
@@ -51,11 +34,52 @@ class Logger : public ILogger
     void addBuffer(std::unique_ptr<IOutLogBuffer> buffer);
     
     /**
+     * Logs a message with a DEBUG indication, no sink needed.
+     * @param msg
+     */
+    void logDebug(const LogMessage &msg) override;
+    
+    /**
+     * Logs a message with an INFO indication, no sink needed.
+     * @param msg
+     */
+    void logInfo(const LogMessage &msg) override;
+    
+    /**
+     * Logs a message with a WARNING indication, no sink needed.
+     * @param msg
+     */
+    void logWarn(const LogMessage &msg) override;
+    
+    /**
+     * Logs a message with an ERROR indication, no sink needed.
+     * @param msg
+     */
+    void logError(const LogMessage &msg) override;
+    
+    /**
      * Swaps this->m_sinks and out buffer with destination. Can be used to clear sinks and logger if called
      * with an empty vector (Not recommended...).
      * @param destination
      */
     void swap(Logger *destination);
+    
+    /**
+     * Creates a sink of given type with given arguments. This might be converted into a "SinkFactory" in a future.
+     * IMPORTANT: An ILogger pointer is passed as the FIRST parameter.
+     * @tparam LogSinkT
+     * @tparam SinkArgs
+     * @param args
+     * @return std::shared_ptr<LogSinkT>
+     */
+    template <typename LogSinkT, typename... SinkArgs>
+        requires std::is_base_of_v<LogSink, LogSinkT>
+    [[nodiscard]] std::shared_ptr<LogSinkT> createSink(SinkArgs &&...args)
+    {
+        std::shared_ptr<LogSinkT> ptr = std::make_shared<LogSinkT>(this, std::forward<SinkArgs>(args)...);
+        m_sinks.push_back(ptr);
+        return ptr;
+    }
     
     /**
      * Returns the vector of created sinks for this logger.
