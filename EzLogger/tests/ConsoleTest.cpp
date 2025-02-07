@@ -64,8 +64,8 @@ void threadLog(LogSink *sink)
 
 void switchToAsync()
 {
-    auto sync  = std::static_pointer_cast<SyncLogger>(logger);
-    
+    auto sync = std::static_pointer_cast<SyncLogger>(logger);
+
     logger = std::move(sync->switchToAsync());
     auto async = std::static_pointer_cast<AsyncLogger>(logger);
 
@@ -162,6 +162,11 @@ int main()
         logger = EzLogger::createSinkLogger("TEST");
         std::shared_ptr<LogSink> testSink = logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
 
+        logger->logDebug(LogMessage("DEBUG LOG!"));
+        logger->logInfo(LogMessage("INFO LOG!"));
+        logger->logWarn(LogMessage("WARNING LOG!"));
+        logger->logError(LogMessage("ERROR LOG!"));
+
 #ifdef EZLIB_WORKING_WINDOWS
         std::shared_ptr<WindowsExceptionSink> exceptionSink =
             logger->createSink<WindowsExceptionSink>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
@@ -169,7 +174,7 @@ int main()
         std::shared_ptr<ExceptionSink> exceptionSink =
             logger->createSink<ExceptionSink>(LogSegment("EXCEPTION_SYNC").colorize(Colors::bold, Colors::red));
 #endif
-        
+
         testSync(testSink.get());
         switchToAsync();
         testAsync(testSink.get());

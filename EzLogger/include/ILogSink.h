@@ -2,6 +2,7 @@
 #define EZLOGGER_ILOGSINK_H
 
 #include "EzLibCommon.h"
+#include "LogMessage/LogSegment.h"
 
 /**
  * This class represents an interface for a log sink.
