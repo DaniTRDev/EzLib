@@ -5,8 +5,7 @@
 #include "LogSegment.h"
 
 /**
- * This class represents a log message. It allows a deeper modification of the pushLog message.
- * For colours, look at LogSegment.
+ * This class represents a log factory. It creates a log message, with colors and with a prefix (if set explicitly).
  */
 class LogMessage
 {
@@ -15,19 +14,50 @@ class LogMessage
      * Creates the object with the given segment.
      * @param segment
      */
-    explicit LogMessage(const LogSegment &segment);
+    explicit LogMessage(const LogSegment &prefix);
 
     /**
      * Destroys this object.
      */
     ~LogMessage();
 
+	/**
+	 * Adds a string as a segment and returns the same instance of LogMessage.
+	 * @return LogMessage&
+	 */
+	LogMessage &add(const std::string &content);
+
     /**
-     * Appends a segment to the log message and returns a reference to this.
-     * @param segment
-     * @return LogMessage
+     * Adds a formatted segment to the message and returns the same instance of LogMessage.
+     * @tparam Args
+     * @param fmt
+     * @param args
+     * @return LogMessage&
      */
-    LogMessage &append(const LogSegment &segment);
+     template<typename ...Args>
+    LogMessage &add(const char* fmt, Args&& ...args)
+	{
+		m_segments.push_back(LogSegment(fmt, std::forward<Args>(args)...));
+		return *this;
+	}
+
+	/**
+	 * Colors the last segment added. If there are not segments it will do nothing but will return the same instance of
+	 * LogMessage.
+	 * @tparam Args
+	 * @return LogMessage&
+	 */
+	template<typename ...Args>
+	LogMessage &colorize(Args&& ...args)
+	{
+		if (!m_segments.empty())
+		{
+			auto &segment = m_segments.at(m_segments.size() - 1);
+			segment.colorize(std::forward<Args>(args)...);
+		}
+
+		return *this;
+	}
 
     /**
      * Returns the coloured string of the message. Avoid unnecessary calls because
@@ -43,12 +73,6 @@ class LogMessage
      * @return std::string
      */
     [[nodiscard]] std::string getRawMessage() const;
-
-    /**
-     * Queues this message for logging at the given sink and sets the prefix of the message.
-     * @param worker
-     */
-    // void log(class LogSink *sink);
 
     /**
      * Sets the prefix of the LogMessage. If already set, it will be replaced.

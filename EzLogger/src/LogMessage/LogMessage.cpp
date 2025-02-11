@@ -1,20 +1,19 @@
 #include "LogMessage/LogMessage.h"
 // #include "include/LogSink.h"
 
-LogMessage::LogMessage(const LogSegment &content) : m_prefix("")
-{
-    append(content);
-}
+LogMessage::LogMessage(const LogSegment &prefix) : m_prefix(prefix)
+{}
 
 LogMessage::~LogMessage()
 {
+	m_prefix = {""};
     m_segments.clear();
 }
 
-LogMessage &LogMessage::append(const LogSegment &segment)
+LogMessage &LogMessage::add(const std::string &content)
 {
-    m_segments.push_back(segment);
-    return *this;
+	m_segments.push_back(LogSegment(content));
+	return *this;
 }
 
 std::string LogMessage::getColouredMessage() const
@@ -56,13 +55,6 @@ std::string LogMessage::getRawMessage() const
 
     return std::move(result); // Avoid unnecessary copies.
 }
-
-/*
-void LogMessage::log(class LogSink *sink)
-{
-    setPrefix(sink->getName(), sink->getColor());
-    sink->log(std::make_unique<LogMessage>(*this));
-}*/
 
 void LogMessage::setPrefix(const LogSegment &prefix)
 {
