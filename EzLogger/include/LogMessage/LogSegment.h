@@ -1,7 +1,7 @@
 #ifndef EZLOGGER_LOGSEGMENT_H
 #define EZLOGGER_LOGSEGMENT_H
 
-#include "../../../Common/Common.h"
+#include "EzLibCommon.h"
 
 struct SimpleColor
 {

@@ -1,7 +1,7 @@
 #ifndef EZLOGGER_LOGSINK_H
 #define EZLOGGER_LOGSINK_H
 
-#include "Common.h"
+#include "EzLibCommon.h"
 #include "LogMessage/LogMessage.h"
 #include "ILogSink.h"
 #include "ILogger.h"

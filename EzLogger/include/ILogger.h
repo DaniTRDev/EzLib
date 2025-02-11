@@ -1,7 +1,7 @@
 #ifndef EZLOGGER_ILOGGER_H
 #define EZLOGGER_ILOGGER_H
 
-#include "../../Common/Common.h"
+#include "EzLibCommon.h"
 
 /**
  * Interface for a Logger. Each logger must contain its own log function and the output buffers pushLog will be written
