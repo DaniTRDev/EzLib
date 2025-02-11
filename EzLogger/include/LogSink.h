@@ -2,9 +2,9 @@
 #define EZLOGGER_LOGSINK_H
 
 #include "EzLibCommon.h"
+#include "LogMessage/LogMessage.h"
 #include "ILogSink.h"
 #include "ILogger.h"
-#include "LogMessage/LogMessage.h"
 
 /**
  * Represents a basic sink of log messages. At the moment sink only sets the prefix of the log messages sent to them. But its
