@@ -1,7 +1,8 @@
 #ifndef EZLOGGER_ILOGSINK_H
 #define EZLOGGER_ILOGSINK_H
 
-#include "../../Common/Common.h"
+#include "EzLibCommon.h"
+#include "LogMessage/LogSegment.h"
 
 /**
  * This class represents an interface for a log sink.

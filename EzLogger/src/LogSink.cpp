@@ -17,7 +17,7 @@ LogSink::LogSink(const LogSink &copy)
 LogSink::~LogSink()
 {
     m_logger = nullptr;
-    m_prefix = {""};
+    m_prefix = LogSegment("");
 }
 
 bool LogSink::pushLog(const LogMessage &msg)

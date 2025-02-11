@@ -1,7 +1,6 @@
 #ifndef EZLOGGER_ILOGGER_H
 #define EZLOGGER_ILOGGER_H
-
-#include "../../Common/Common.h"
+#include "EzLibCommon.h"
 
 /**
  * Interface for a Logger. Each logger must contain its own log function and the output buffers pushLog will be written
@@ -15,6 +14,30 @@ class ILogger
      */
     virtual ~ILogger() = default;
 
+    /**
+     * Logs a message with a DEBUG indication, no sink needed.
+     * @param msg
+     */
+    virtual void logDebug(const class LogMessage &msg) = 0;
+    
+    /**
+     * Logs a message with an INFO indication, no sink needed.
+     * @param msg
+     */
+    virtual void logInfo(const class LogMessage &msg) = 0;
+    
+    /**
+     * Logs a message with a WARNING indication, no sink needed.
+     * @param msg
+     */
+    virtual void logWarn(const class LogMessage &msg) = 0;
+    
+    /**
+     * Logs a message with an ERROR indication, no sink needed.
+     * @param msg
+     */
+    virtual void logError(const class LogMessage &msg) = 0;
+    
     /**
      * Pushes a message to the log. Returns true if succeeded
      * @param message

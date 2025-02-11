@@ -1,5 +1,4 @@
 #include "LogMessage/LogMessage.h"
-// #include "include/LogSink.h"
 
 LogMessage::LogMessage(const LogSegment &prefix) : m_prefix(prefix)
 {}
