@@ -18,8 +18,10 @@ void WindowsExceptionSink::attachWindowsLogger()
 {
     if (m_internalExceptionLoggerSink)
     {
-        this->pushLog(LogMessage("Sink: ").append(m_prefix).append(
-            " tried to attach a VEH and an UEF logger and there's one already"));
+        this->pushLog(LogMessage("")
+                          .add("Sink: ")
+                          .add(m_prefix.getText())
+                          .add(" tried to attach a VEH and an UEF logger and there's one already"));
         return;
     }
 
@@ -70,11 +72,11 @@ LONG WindowsExceptionSink::InternalExceptionLogger(EXCEPTION_POINTERS *ex)
     };
 
     LogMessage msg = LogMessage("");
-    msg.append(LogSegment("ERROR: ").colorize(Colors::red));
-    msg.append(LogSegment("Received exception: "));
-    msg.append(LogSegment("{} ", exceptionToStr[ex->ExceptionRecord->ExceptionCode]).colorize(Colors::red));
-    msg.append(LogSegment("at: "));
-    msg.append(LogSegment("0x{:X}", size_t(ex->ExceptionRecord->ExceptionAddress)).colorize(Colors::blue));
+    msg.add("ERROR: ").colorize(Colors::red);
+    msg.add("Received exception: ");
+    msg.add("{} ", exceptionToStr[ex->ExceptionRecord->ExceptionCode]).colorize(Colors::red);
+    msg.add("at: ");
+    msg.add("0x{:X}", size_t(ex->ExceptionRecord->ExceptionAddress)).colorize(Colors::blue);
 
     if (!m_internalExceptionLoggerSink)
     {
