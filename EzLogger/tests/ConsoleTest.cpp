@@ -170,7 +170,7 @@ void testVEHLogger(WindowsExceptionSink *exceptionLogger, LogSink *debugSink)
 	exceptionLogger->detachWindowsLogger();
 	RemoveVectoredExceptionHandler(vehHandle); // Remove the handler used to fix the exp.
 
-	LogMessage msg = LogMessage("Windows exception logged successfully!");
+	LogMessage msg = LogMessage("").add("Windows exception logged successfully!");
 	debugSink->pushLog(msg);
 }
 #endif
