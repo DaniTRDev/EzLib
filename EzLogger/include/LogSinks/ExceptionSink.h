@@ -16,7 +16,7 @@ public:
 	/**
 	 * Destroys the object.
 	 */
-	~ExceptionSink();
+	~ExceptionSink() override;
 
 	/**
 	 * Attaches a signal logger to the current THREAD. IMPORTANT NOTE: If a thread calls attachSignalLogger,

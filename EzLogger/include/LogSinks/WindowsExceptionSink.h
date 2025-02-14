@@ -19,7 +19,7 @@ class WindowsExceptionSink : public ExceptionSink
     /**
      * Destroys the obj.
      */
-    ~WindowsExceptionSink();
+    ~WindowsExceptionSink() override;
 
     /**
      * Attaches a signal a VEH and an UEF to log exceptions. Linked to the current PROCESS.

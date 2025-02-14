@@ -29,7 +29,7 @@ class LogSink : public ILogSink
     /**
      * Destroys the object.
      */
-    ~LogSink();
+    ~LogSink() override;
 
     /**
      * Pushes a log to the internal logger and returns true if succeeded.
