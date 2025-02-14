@@ -18,7 +18,7 @@ class ConsoleOutLogBuffer : public IOutLogBuffer
     /**
      * Destroys the object. If console buffer was opened, it will close it.
      */
-    ~ConsoleOutLogBuffer();
+    ~ConsoleOutLogBuffer() override;
 
     /**
      * Closes the console buffer and resets console state. Returns true if succeeded.

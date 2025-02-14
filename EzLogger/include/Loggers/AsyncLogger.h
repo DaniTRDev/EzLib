@@ -18,7 +18,7 @@ class AsyncLogger : public Logger
     /**
      * Destroys the object.
      */
-    ~AsyncLogger();
+    ~AsyncLogger() override;
 
     /**
      * Returns true if internal thread is alive. False otherways.
