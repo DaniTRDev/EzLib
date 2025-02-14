@@ -13,8 +13,6 @@ AsyncLogger::~AsyncLogger()
 
     while(!m_messages.empty())
         m_messages.pop();
-
-    Logger::~Logger();
 }
 
 bool AsyncLogger::isInternalThreadAlive() const

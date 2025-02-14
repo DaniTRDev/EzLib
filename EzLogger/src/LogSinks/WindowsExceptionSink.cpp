@@ -12,7 +12,6 @@ WindowsExceptionSink::WindowsExceptionSink(ILogger *logger, const LogSegment &pr
 WindowsExceptionSink::~WindowsExceptionSink()
 {
     detachWindowsLogger();
-    ExceptionSink::~ExceptionSink();
 }
 
 void WindowsExceptionSink::attachWindowsLogger()
