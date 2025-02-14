@@ -10,7 +10,7 @@ ExceptionSink::~ExceptionSink()
 	this->pushLog(LogMessage("").add("Shutting down sink:").add(m_prefix.getText()));
 	detachSignalLogger();
 
-    LogSink::~ILogSink();
+    LogSink::~LogSink();
 }
 
 void ExceptionSink::attachSignalLogger()
