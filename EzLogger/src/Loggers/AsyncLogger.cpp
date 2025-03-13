@@ -11,7 +11,8 @@ AsyncLogger::~AsyncLogger()
     if (m_isInternalThreadAlive)
         m_thread.join();
 
-    m_outBuffers.clear();
+    while(!m_messages.empty())
+        m_messages.pop();
 }
 
 bool AsyncLogger::isInternalThreadAlive() const

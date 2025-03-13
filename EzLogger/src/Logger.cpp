@@ -3,6 +3,7 @@
 Logger::~Logger()
 {
     m_sinks.clear();
+    m_outBuffers.clear();
 }
 
 bool Logger::pushLog(std::unique_ptr<LogMessage> message)
