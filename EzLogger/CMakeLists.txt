@@ -1,3 +1,4 @@
+# TODO: Make EzLib build as STATIC or SHARED module.
 add_library("EzLogger"
         "src/Logger.cpp"
         "src/LogSink.cpp"
