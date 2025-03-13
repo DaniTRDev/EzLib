@@ -24,6 +24,10 @@
 #include <Windows.h>
 #include <processthreadsapi.h>
 
+/**
+ * Provide a set of APIs that are OS-specific.
+ * TODO: Move this to its own project (EzOsAbstractor).
+ */
 namespace OsDependant
 {
 inline int GetThreadId()
