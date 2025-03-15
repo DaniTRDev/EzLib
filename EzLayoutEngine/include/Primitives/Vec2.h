@@ -158,6 +158,34 @@ class Vec2
     bool operator==(const Vec2 &other) const;
     
     /**
+     * Returns true if this object BOTH components are < than other components.
+     * @param other
+     * @return
+     */
+    bool operator<(const Vec2 &other) const;
+    
+    /**
+     * Returns true if this object BOTH components are > than other components.
+     * @param other
+     * @return
+     */
+    bool operator>(const Vec2 &other) const;
+    
+    /**
+     * Returns true if this object BOTH components are <= than other components.
+     * @param other
+     * @return
+     */
+    bool operator<=(const Vec2 &other) const;
+    
+    /**
+     * Returns true if this object BOTH components are >= than other components.
+     * @param other
+     * @return
+     */
+    bool operator>=(const Vec2 &other) const;
+    
+    /**
      * Returns a new Vec2 with the addition of the components of this object and component.
      * @param component
      * @return Vec2

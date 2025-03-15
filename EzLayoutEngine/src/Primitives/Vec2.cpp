@@ -117,6 +117,26 @@ bool Vec2::operator==(const Vec2 &other) const
     return (m_x == other.m_x) && (m_y == other.m_y);
 }
 
+bool Vec2::operator<(const Vec2 &other) const
+{
+    return (m_x < other.m_x) && (m_y < other.m_y);
+}
+
+bool Vec2::operator>(const Vec2 &other) const
+{
+    return (m_x > other.m_x) && (m_y > other.m_y);
+}
+
+bool Vec2::operator<=(const Vec2 &other) const
+{
+    return (m_x <= other.m_x) && (m_y <= other.m_y);
+}
+
+bool Vec2::operator>=(const Vec2 &other) const
+{
+    return (m_x >= other.m_x) && (m_y >= other.m_y);
+}
+
 Vec2 Vec2::operator+(const uint32_t &component) const
 {
     // Redefined not to add 1 extra call. Performance-wise.
