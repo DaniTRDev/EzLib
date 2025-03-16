@@ -1,4 +1,12 @@
-add_library("EzLayoutEngine"
+set(EZLAYOUT_ENGINE_BUILD "SHARED")
+
+if (EZLIB_BUILD_STATIC)
+    set(EZLAYOUT_ENGINE_BUILD "STATIC")
+endif()
+
+message(STATUS "Building EzLayoutEngine as ${EZLAYOUT_ENGINE_BUILD}")
+
+add_library("EzLayoutEngine" ${EZLAYOUT_ENGINE_BUILD}
         "include/EzLayoutEngine.h"
         "include/ILayout.h"
         "include/Clipping/Clipper.h"
