@@ -45,6 +45,21 @@ bool BasicLayout::resize(bool resizePhysically, const Vec2 &newSize)
     return m_clipper.getSize() <= m_clipper.getPhysicalSize();
 }
 
+const Vec2 &BasicLayout::getPhysicalSize()
+{
+    return m_clipper.getPhysicalSize();
+}
+
+const Vec2 &BasicLayout::getPos()
+{
+    return m_clipper.getPos();
+}
+
+const Vec2 &BasicLayout::getSize()
+{
+    return m_clipper.getSize();
+}
+
 void BasicLayout::divide(uint32_t numDivisions)
 {
     size_t previousSize = m_elements.size();

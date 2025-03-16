@@ -45,6 +45,24 @@ class BasicLayout : public ILayout
     bool resize(bool resizePhysically, const Vec2 &newSize) override;
 
     /**
+     * Returns the physical size of the layout.
+     * @return const Vec2&
+     */
+    const Vec2 &getPhysicalSize();
+    
+    /**
+     * Returns the position of the layout.
+     * @return  const Vec2&
+     */
+    const Vec2 &getPos();
+    
+    /**
+     * Returns the clipped size of the layout.
+     * @return const Vec2&
+     */
+    const Vec2 &getSize();
+    
+    /**
      * Divides this layout element on numDivisions sub elements. If layout is already divided, it will try to move and
      * resize them individually to fit the new size.
      *
