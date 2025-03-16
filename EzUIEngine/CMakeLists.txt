@@ -7,6 +7,11 @@ endif()
 message(STATUS "Building EzUIEngine as ${EZUI_ENGINE_BUILD}")
 
 add_library("EzUIEngine" ${EZUI_ENGINE_BUILD}
+        "include/InputManager/BasicInputManager.h"
+        "include/InputManager/IInputManager.h"
+        "include/InputManager/InputData.h"
+
+        "src/InputManager/BasicInputManager.cpp"
 )
 
 target_include_directories("EzUIEngine" PUBLIC ${EZLIB_COMMON_PATH})
