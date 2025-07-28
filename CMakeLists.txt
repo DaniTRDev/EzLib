@@ -14,5 +14,5 @@ if (EZLIB_BUILD_TESTS)
 endif ()
 
 add_subdirectory("EzLogger")
-add_subdirectory("EzLayoutEngine")
-add_subdirectory("EzUIEngine")
+#add_subdirectory("EzLayoutEngine")
+#add_subdirectory("EzUIEngine")
