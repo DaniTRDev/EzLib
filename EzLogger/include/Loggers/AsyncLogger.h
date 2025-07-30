@@ -45,7 +45,7 @@ class AsyncLogger : public Logger
      * @param logger
      * @return bool
      */
-    [[nodiscard]] static bool log(AsyncLogger *logger);
+    static bool log(AsyncLogger *logger);
 
     /**
      * Pushes a log message to the queue, the designed thread will write it into the
@@ -53,7 +53,7 @@ class AsyncLogger : public Logger
      * @param message
      * @return bool
      */
-    [[nodiscard]] bool pushLog(std::unique_ptr<LogMessage> message) override;
+    bool pushLog(LogMessage message) override;
 
     /**
      * Sets the working state of the async logger.
@@ -69,18 +69,26 @@ class AsyncLogger : public Logger
     void spawnThread();
     
   private:
+    
+    /**
+     * Returns true if there are messages in the queue. This function is not thread-safe. It's private for this reason
+     * and can only be called by this class on its own
+     * @return bool
+     */
+    [[nodiscard]] bool areThereMessages();
+    
     /**
      * Retrieves the first message of the queue (if any) and removes it from the queue.
-     * This function is not thread-safe hence why it can only be called by this class.
+     * This function is not thread-safe hence why it can only be called by this class on its own.
      * @return std::unique_ptr<LogMessage>
      */
-    [[nodiscard]] std::unique_ptr<LogMessage> getFirstMessage();
+    [[nodiscard]] LogMessage getFirstMessage();
 
   private:
     bool m_isInternalThreadAlive; // Is m_thread alive?
     bool m_working;               // Bool that will tell the async thread to log or not.
     std::mutex m_mutex;           // Mutex used to control logging.
-    std::queue<std::unique_ptr<LogMessage>> m_messages;
+    std::queue<LogMessage> m_messages;
     std::thread m_thread;
 };
 

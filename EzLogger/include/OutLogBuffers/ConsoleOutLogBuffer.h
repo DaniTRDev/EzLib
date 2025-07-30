@@ -46,7 +46,7 @@ class ConsoleOutLogBuffer : public IOutLogBuffer
      * @param message
      * @return bool.
      */
-    [[nodiscard]] bool write(const std::unique_ptr<LogMessage> &message) override;
+    [[nodiscard]] bool write(LogMessage message) override;
 
   private:
     bool m_didConsoleExist;
