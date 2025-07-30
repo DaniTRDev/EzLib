@@ -2,13 +2,12 @@
 #define EZLOGGER_LOGSINK_H
 
 #include "EzLibCommon.h"
-#include "LogMessage/LogMessage.h"
 #include "ILogSink.h"
 #include "ILogger.h"
 
 /**
- * Represents a basic sink of log messages. At the moment sink only sets the prefix of the log messages sent to them. But its
- * functionality might be augmented in a future.
+ * Represents a basic sink of log messages. At the moment sink only sets the prefix of the log messages sent to them.
+ * But its functionality might be augmented in a future.
  */
 class LogSink : public ILogSink
 {
@@ -18,14 +17,14 @@ class LogSink : public ILogSink
      * @param prefix
      * @param logger
      */
-    LogSink(ILogger *logger, const LogSegment &prefix);
+    LogSink(ILogger *logger, LogSegment prefix);
 
     /**
      * Defines an explicit copy-constructor.
      * @param copy
      */
     LogSink(const LogSink &copy);
-    
+
     /**
      * Destroys the object.
      */
@@ -36,13 +35,37 @@ class LogSink : public ILogSink
      * @param msg
      * @return bool
      */
-    bool pushLog(const LogMessage &msg) override;
-    
+    bool pushLog(LogMessage msg) override;
+
+    /**
+     * Logs a message with a DEBUG indication.
+     * @param msg
+     */
+    void logDebug(LogMessage msg) override;
+
+    /**
+     * Logs a message with an ERROR indication.
+     * @param msg
+     */
+    void logError(LogMessage msg) override;
+
+    /**
+     * Logs a message with an INFO indication.
+     * @param msg
+     */
+    void logInfo(LogMessage msg) override;
+
+    /**
+     * Logs a message with a WARNING indication.
+     * @param msg
+     */
+    void logWarn(LogMessage msg) override;
+
     /**
      * Sets the logger for this class.
      * @param logger
      */
-    void setLogger(class ILogger* logger);
+    void setLogger(class ILogger *logger);
 
   private:
     std::mutex m_mutex; // Make this class thread-safe by default.
