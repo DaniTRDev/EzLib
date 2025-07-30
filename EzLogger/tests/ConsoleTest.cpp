@@ -4,7 +4,7 @@ std::shared_ptr<Logger> logger;
 
 void testSync(LogSink *sink)
 {
-	sink->pushLog(LogMessage("").add("This word should be default"));
+	sink->pushLog(LogMessage("This word should be default"));
 
 	static const std::pair<const char *, const SimpleColor *> colorMap[] = {
 			{ "bold",        &Colors::bold },
@@ -52,7 +52,7 @@ void testSync(LogSink *sink)
 	// Generate single color logs
 	for (const auto &[ name, color ]: colorMap)
 	{
-		auto msg = LogMessage("").add(name).colorize(*color);
+		auto msg = LogMessage(name).colorize(*color);
 		sink->pushLog(msg);
 	}
 
@@ -63,7 +63,7 @@ void testSync(LogSink *sink)
 		{
 			std::string combinationName = std::string(colorMap[ i ].first) + "+" + colorMap[ j ].first;
 
-			auto msg = LogMessage("").add(combinationName).colorize(*colorMap[ i ].second, *colorMap[ j ].second);
+			auto msg = LogMessage(combinationName).colorize(*colorMap[ i ].second, *colorMap[ j ].second);
 			sink->pushLog(msg);
 		}
 	}
@@ -85,7 +85,7 @@ void threadLog(LogSink *sink)
         // Make this thread sleep a random time between each message so we can really see if this is being concurrent.
 	}
 
-	sink->pushLog(LogMessage("").add("Final log from thread: 0x{:X}", OsDependant::GetThreadId()));
+	sink->pushLog(LogMessage("Final log from thread: 0x{:X}", OsDependant::GetThreadId()));
 }
 
 void switchToAsync()
@@ -129,7 +129,7 @@ void testRuntimeError(LogSink *errorSink, LogSink *debugSink)
 {
 	EZLOGGER_LOG_TRY_CATCH(errorSink, { throw std::runtime_error("Test C++ exception!"); });
 
-	LogMessage msg = LogMessage("").add("std::runtime_error Logged successfully!");
+	LogMessage msg = LogMessage("std::runtime_error Logged successfully!");
 	debugSink->pushLog(msg);
 }
 
@@ -139,7 +139,7 @@ void testSignalLogger(ExceptionSink *exceptionLogger, LogSink *debugSink)
 	std::raise(SIGINT);
 	exceptionLogger->detachSignalLogger();
 
-	LogMessage msg = LogMessage("").add("Signal Logged successfully!");
+	LogMessage msg = LogMessage("Signal Logged successfully!");
 	debugSink->pushLog(msg);
 }
 
@@ -173,7 +173,7 @@ void testVEHLogger(WindowsExceptionSink *exceptionLogger, LogSink *debugSink)
 	exceptionLogger->detachWindowsLogger();
 	RemoveVectoredExceptionHandler(vehHandle); // Remove the handler used to fix the exp.
 
-	LogMessage msg = LogMessage("").add("Windows exception logged successfully!");
+	LogMessage msg = LogMessage("Windows exception logged successfully!");
 	debugSink->pushLog(msg);
 }
 #endif
