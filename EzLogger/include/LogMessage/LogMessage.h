@@ -11,21 +11,32 @@ class LogMessage
 {
   public:
     /**
-     * Creates the object with the given segment.
-     * @param segment
+     * Creates an empty LogMessage.
      */
-    explicit LogMessage(const LogSegment &prefix);
+    LogMessage();
+    
+    /**
+     * Adds a formatted segment to the message and returns the same instance of LogMessage.
+     * @tparam Args
+     * @param fmt
+     * @param args
+     * @return LogMessage&
+     */
+    template <typename... Args> explicit inline LogMessage(const char *fmt, Args &&...args)
+    {
+        add(fmt, std::forward<Args>(args)...);
+    }
 
     /**
      * Destroys this object.
      */
     ~LogMessage();
 
-	/**
-	 * Adds a string as a segment and returns the same instance of LogMessage.
-	 * @return LogMessage&
-	 */
-	LogMessage &add(const std::string &content);
+    /**
+     * Adds a string as a segment and returns the same instance of LogMessage.
+     * @return LogMessage&
+     */
+    LogMessage &add(const std::string &content);
 
     /**
      * Adds a formatted segment to the message and returns the same instance of LogMessage.
@@ -34,31 +45,42 @@ class LogMessage
      * @param args
      * @return LogMessage&
      */
-     template<typename ...Args>
-    LogMessage &add(const char* fmt, Args&& ...args)
-	{
-		m_segments.push_back(LogSegment(fmt, std::forward<Args>(args)...));
-		return *this;
-	}
+    template <typename... Args> LogMessage &add(const char *fmt, Args &&...args)
+    {
+        m_segments.push_back(LogSegment(fmt, std::forward<Args>(args)...));
+        return *this;
+    }
 
-	/**
-	 * Colors the last segment added. If there are not segments it will do nothing but will return the same instance of
-	 * LogMessage.
-	 * @tparam Args
-	 * @return LogMessage&
-	 */
-	template<typename ...Args>
-	LogMessage &colorize(Args&& ...args)
-	{
-		if (!m_segments.empty())
-		{
-			auto &segment = m_segments.at(m_segments.size() - 1);
-			segment.colorize(std::forward<Args>(args)...);
-		}
+    /**
+     * Colors the last segment added. If there are not segments it will do nothing but will return the same instance of
+     * LogMessage.
+     * @tparam Args
+     * @return LogMessage&
+     */
+    template <typename... Args> LogMessage &colorize(Args &&...args)
+    {
+        if (!m_segments.empty())
+        {
+            auto &segment = m_segments.at(m_segments.size() - 1);
+            segment.colorize(std::forward<Args>(args)...);
+        }
 
-		return *this;
-	}
+        return *this;
+    }
 
+    /**
+     * Sets the prefix of the LogMessage. If already set, old will be moved into message's body and
+     * new will be set so final message looks like this: [prefix][old prefix] ...
+     * @param prefix
+     */
+    LogMessage &setPrefix(LogSegment prefix);
+
+    /**
+     * Moves (not copying) the content of this message to other and LOSES the data in this.
+     * @param other
+     */
+    void moveTo(LogMessage &other);
+    
     /**
      * Returns the coloured string of the message. Avoid unnecessary calls because
      * this method iterates over m_segments and CREATES a string with every segment
@@ -73,12 +95,6 @@ class LogMessage
      * @return std::string
      */
     [[nodiscard]] std::string getRawMessage() const;
-
-    /**
-     * Sets the prefix of the LogMessage. If already set, it will be replaced.
-     * @param prefix
-     */
-    void setPrefix(const LogSegment &prefix);
 
   private:
     LogSegment m_prefix;                // what will be printed BEFORE the text on segments.

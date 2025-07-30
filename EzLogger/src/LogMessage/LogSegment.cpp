@@ -1,5 +1,9 @@
 #include "LogMessage/LogSegment.h"
 
+LogSegment::LogSegment()
+{
+}
+
 LogSegment::LogSegment(const std::string &text) : m_text(text)
 {
 }
@@ -8,6 +12,11 @@ LogSegment::~LogSegment()
 {
     m_text.clear();
     m_text = "";
+}
+
+bool LogSegment::isInitialized()
+{
+    return !m_text.empty();
 }
 
 std::string LogSegment::getColorized() const
