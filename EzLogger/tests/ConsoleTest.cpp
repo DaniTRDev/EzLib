@@ -79,7 +79,10 @@ void threadLog(LogSink *sink)
 				.add("0x{:X}", OsDependant::GetThreadId()).colorize(Colors::green);
 
 		sink->pushLog(msg);
-		std::this_thread::yield(); // Let other threads execute.
+  
+        srand(time(NULL));
+		std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 250));
+        // Make this thread sleep a random time between each message so we can really see if this is being concurrent.
 	}
 
 	sink->pushLog(LogMessage("").add("Final log from thread: 0x{:X}", OsDependant::GetThreadId()));
