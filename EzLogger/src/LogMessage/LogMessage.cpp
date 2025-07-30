@@ -1,5 +1,10 @@
 #include "LogMessage/LogMessage.h"
 
+LogMessage::LogMessage(const std::string &msg)
+{
+    add(msg);
+}
+
 LogMessage::LogMessage() : m_prefix()
 {
 }

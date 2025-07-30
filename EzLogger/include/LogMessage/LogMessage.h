@@ -16,7 +16,13 @@ class LogMessage
     LogMessage();
     
     /**
-     * Adds a formatted segment to the message and returns the same instance of LogMessage.
+     * Creates the message with a non-colored segment.
+     * @param msg
+     */
+    explicit LogMessage(const std::string &msg);
+    
+    /**
+     * Creates the message with a formated segment.
      * @tparam Args
      * @param fmt
      * @param args
@@ -39,7 +45,7 @@ class LogMessage
     LogMessage &add(const std::string &content);
 
     /**
-     * Adds a formatted segment to the message and returns the same instance of LogMessage.
+     * Adds a formated segment to the message and returns the same instance of LogMessage.
      * @tparam Args
      * @param fmt
      * @param args
