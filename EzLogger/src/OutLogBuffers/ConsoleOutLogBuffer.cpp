@@ -87,7 +87,7 @@ bool ConsoleOutLogBuffer::write(LogMessage message)
 
     // FIXME: c_str is really required?
     std::string messageData = message.getColouredMessage() + "\n";
-    std::streamsize written = m_internalBuffer->sputn(messageData.c_str(), std::streamsize(messageData.length()));
+    std::streamsize written = m_internalBuffer->sputn(messageData.data(), std::streamsize(messageData.length()));
 
     m_internalBuffer->pubsync();
     return written == std::streamsize(messageData.length());
