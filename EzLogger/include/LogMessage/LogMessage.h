@@ -14,13 +14,13 @@ class LogMessage
      * Creates an empty LogMessage.
      */
     LogMessage();
-    
+
     /**
      * Creates the message with a non-colored segment.
      * @param msg
      */
     explicit LogMessage(const std::string &msg);
-    
+
     /**
      * Creates the message with a formated segment.
      * @tparam Args
@@ -37,6 +37,13 @@ class LogMessage
      * Destroys this object.
      */
     ~LogMessage();
+
+    /**
+     * Adds other's message content into this IGNORING OTHER'S PREFIX. WARNING: This COPIES the content of msg.
+     * @param msg
+     * @return LogMessage &
+     */
+    LogMessage &add(LogMessage &other);
 
     /**
      * Adds a string as a segment and returns the same instance of LogMessage.
@@ -86,7 +93,7 @@ class LogMessage
      * @param other
      */
     void moveTo(LogMessage &other);
-    
+
     /**
      * Returns the coloured string of the message. Avoid unnecessary calls because
      * this method iterates over m_segments and CREATES a string with every segment

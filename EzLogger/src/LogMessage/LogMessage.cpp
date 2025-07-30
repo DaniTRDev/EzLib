@@ -15,6 +15,12 @@ LogMessage::~LogMessage()
     m_segments.clear();
 }
 
+LogMessage &LogMessage::add(LogMessage &other)
+{
+    std::copy(other.m_segments.begin(), other.m_segments.end(), std::back_inserter(m_segments));
+    return *this;
+}
+
 LogMessage &LogMessage::add(const std::string &content)
 {
     m_segments.push_back(LogSegment(content));
