@@ -1,7 +1,7 @@
 #include "Loggers/SyncLogger.h"
 #include "Loggers/AsyncLogger.h"
 
-bool SyncLogger::pushLog(std::unique_ptr<LogMessage> message)
+bool SyncLogger::pushLog(LogMessage message)
 {
     // Call the super method.
     return Logger::pushLog(std::move(message));

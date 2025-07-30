@@ -80,13 +80,13 @@ bool ConsoleOutLogBuffer::opened() const
     return m_internalBuffer;
 }
 
-bool ConsoleOutLogBuffer::write(const std::unique_ptr<LogMessage> &message)
+bool ConsoleOutLogBuffer::write(LogMessage message)
 {
     if (!m_internalBuffer)
         return false;
-
-    std::string messageData = message->getColouredMessage() + "\n";
-    std::streamsize written = m_internalBuffer->sputn(messageData.c_str(), std::streamsize(messageData.length()));
+    
+    std::string messageData = message.getColouredMessage() + "\n";
+    std::streamsize written = m_internalBuffer->sputn(messageData.data(), std::streamsize(messageData.length()));
 
     m_internalBuffer->pubsync();
     return written == std::streamsize(messageData.length());

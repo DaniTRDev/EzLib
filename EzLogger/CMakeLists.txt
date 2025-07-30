@@ -1,4 +1,12 @@
-add_library("EzLogger"
+set(EZLOGGER_BUILD "SHARED")
+
+if (EZLIB_BUILD_STATIC)
+    set(EZLOGGER_BUILD "STATIC")
+endif()
+
+message(STATUS "Building EzLogger as ${EZLOGGER_BUILD}")
+
+add_library("EzLogger" ${EZLOGGER_BUILD}
         "src/Logger.cpp"
         "src/LogSink.cpp"
         "src/EzLogger.cpp"

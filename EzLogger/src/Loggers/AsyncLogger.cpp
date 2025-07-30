@@ -7,11 +7,11 @@ AsyncLogger::AsyncLogger() : m_isInternalThreadAlive(false), m_working(true)
 AsyncLogger::~AsyncLogger()
 {
     m_working = false;
-    
+
     if (m_isInternalThreadAlive)
         m_thread.join();
 
-    while(!m_messages.empty())
+    while (!m_messages.empty())
         m_messages.pop();
 }
 
@@ -43,18 +43,13 @@ bool AsyncLogger::log(AsyncLogger *logger)
 {
     std::scoped_lock lock(logger->m_mutex); // Locks mutex.
 
-    if (!logger->isWorking())
+    if (!logger->isWorking() || !logger->areThereMessages())
         return true;
 
-    // If queue is empty, the check will fail and the for will not be executed.
-    bool result = true;
-    if (std::unique_ptr<LogMessage> message = logger->getFirstMessage(); message != nullptr)
-        result = logger->Logger::pushLog(std::move(message)); // Call the super method.
-
-    return result;
+    return logger->Logger::pushLog(std::move(logger->getFirstMessage()));
 }
 
-bool AsyncLogger::pushLog(std::unique_ptr<LogMessage> message)
+bool AsyncLogger::pushLog(LogMessage message)
 {
     std::scoped_lock lock(m_mutex);
     m_messages.push(std::move(message));
@@ -91,13 +86,15 @@ void AsyncLogger::setWorking(bool state)
     m_working = state;
 }
 
-std::unique_ptr<LogMessage> AsyncLogger::getFirstMessage()
+bool AsyncLogger::areThereMessages()
 {
-    if (m_messages.empty())
-        return nullptr;
+    return !m_messages.empty();
+}
 
-    std::unique_ptr<LogMessage> result = std::move(m_messages.front());
+LogMessage AsyncLogger::getFirstMessage()
+{
+    LogMessage result;
+    m_messages.front().moveTo(result);
     m_messages.pop();
-
-    return result;
+    return std::move(result);
 }

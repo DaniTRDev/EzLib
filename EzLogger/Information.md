@@ -1,0 +1,2 @@
+This library seeks to provide an easy way of logging formatted text (with std::format) to Console and File.
+It has 2 versions (AsyncLogger, which is thread-safe; and SyncLogger, which is not thread-safe).

@@ -107,10 +107,15 @@ class LogSegment
 {
   public:
     /**
+     * Creates an empty log segment.
+     */
+    LogSegment();
+    
+    /**
      * Creates the object with the given text.
      * @param text
      */
-    LogSegment(const std::string &text);
+    explicit LogSegment(const std::string &text);
 
     /**
      * Creates the object from the given format (uses std::format).
@@ -119,7 +124,7 @@ class LogSegment
      * @param fmt
      * @param args
      */
-    template <typename... Args> inline LogSegment(const char *fmt, Args &&...args)
+    template <typename... Args> explicit inline LogSegment(const char *fmt, Args &&...args)
     {
         m_text = std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
     }
@@ -128,6 +133,12 @@ class LogSegment
      * Destroys the object.
      */
     ~LogSegment();
+
+    /**
+     * Returns true if there is text in this segment.
+     * @return bool
+     */
+    [[nodiscard]] bool isInitialized();
 
     /**
      * Appends the colors to the internal color vector.

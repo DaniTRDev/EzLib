@@ -1,18 +1,41 @@
 #include "LogMessage/LogMessage.h"
 
-LogMessage::LogMessage(const LogSegment &prefix) : m_prefix(prefix)
-{}
+LogMessage::LogMessage(const std::string &msg)
+{
+    add(msg);
+}
+
+LogMessage::LogMessage() : m_prefix()
+{
+}
 
 LogMessage::~LogMessage()
 {
-	m_prefix = {""};
+    m_prefix = {};
     m_segments.clear();
 }
 
 LogMessage &LogMessage::add(const std::string &content)
 {
-	m_segments.push_back(LogSegment(content));
-	return *this;
+    m_segments.push_back(LogSegment(content));
+    return *this;
+}
+
+LogMessage &LogMessage::setPrefix(LogSegment prefix)
+{
+    if (m_prefix.isInitialized())
+    {
+        m_segments.insert(m_segments.begin(), std::move(m_prefix)); // Move the old prefix to the message itself.
+    }
+
+    m_prefix = std::move(prefix);
+    return *this;
+}
+
+void LogMessage::moveTo(LogMessage &other)
+{
+    other.m_prefix = std::move(other.m_prefix);
+    other.m_segments = std::move(m_segments);
 }
 
 std::string LogMessage::getColouredMessage() const
@@ -23,7 +46,7 @@ std::string LogMessage::getColouredMessage() const
     if (!prefixStr.empty())
     {
         // LogMessage has a prefix, include it.
-        result += std::format("[{}] -> ", prefixStr);
+        result += std::format("[{}] ", prefixStr);
     }
 
     for (auto &segment : m_segments)
@@ -43,7 +66,7 @@ std::string LogMessage::getRawMessage() const
     if (!prefixStr.empty())
     {
         // LogMessage has a prefix, include it.
-        result += std::format("[{}] -> ", prefixStr);
+        result += std::format("[{}]  ", prefixStr);
     }
 
     for (auto &segment : m_segments)
@@ -53,9 +76,4 @@ std::string LogMessage::getRawMessage() const
     }
 
     return std::move(result); // Avoid unnecessary copies.
-}
-
-void LogMessage::setPrefix(const LogSegment &prefix)
-{
-    m_prefix = prefix;
 }

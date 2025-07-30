@@ -10,7 +10,7 @@ class SyncLogger : public Logger
      * Writes the message directly.
      * @param message
      */
-    [[nodiscard]] bool pushLog(std::unique_ptr<LogMessage> message) override;
+    bool pushLog(LogMessage message) override;
     
     /**
      * Switches this log from Sync to Async. It sets the out buffers of the new logger with the ones in this,
