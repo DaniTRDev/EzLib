@@ -25,37 +25,13 @@ class Logger : public ILogger
      * @param message
      * @return bool
      */
-    [[nodiscard]] bool pushLog(std::unique_ptr<LogMessage> message) override;
+    bool pushLog(LogMessage message) override;
 
     /**
      * Adds the buffer to the out buffer list.
      * @param buffer
      */
     void addBuffer(std::unique_ptr<IOutLogBuffer> buffer);
-    
-    /**
-     * Logs a message with a DEBUG indication, no sink needed.
-     * @param msg
-     */
-    void logDebug(const LogMessage &msg) override;
-    
-    /**
-     * Logs a message with an INFO indication, no sink needed.
-     * @param msg
-     */
-    void logInfo(const LogMessage &msg) override;
-    
-    /**
-     * Logs a message with a WARNING indication, no sink needed.
-     * @param msg
-     */
-    void logWarn(const LogMessage &msg) override;
-    
-    /**
-     * Logs a message with an ERROR indication, no sink needed.
-     * @param msg
-     */
-    void logError(const LogMessage &msg) override;
     
     /**
      * Swaps this->m_sinks and out buffer with destination. Can be used to clear sinks and logger if called
