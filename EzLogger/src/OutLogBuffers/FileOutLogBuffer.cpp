@@ -6,7 +6,7 @@ FileOutLogBuffer::FileOutLogBuffer(std::filesystem::path path) : m_path(path)
 
 FileOutLogBuffer::~FileOutLogBuffer()
 {
-    close();
+    m_fileStream.close();
 }
 
 bool FileOutLogBuffer::close()
