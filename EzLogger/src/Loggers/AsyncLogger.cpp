@@ -27,8 +27,6 @@ bool AsyncLogger::isWorking() const
 
 bool AsyncLogger::killThread()
 {
-    std::scoped_lock lock(m_mutex);
-
     if (!m_isInternalThreadAlive)
         return true;
 
