@@ -13,10 +13,11 @@
 #include "Loggers/SyncLogger.h"
 
 #include "OutLogBuffers/ConsoleOutLogBuffer.h"
+#include "OutLogBuffers/FileOutLogBuffer.h"
 
 namespace EzLogger
 {
-	extern std::unique_ptr<SyncLogger> createSinkLogger(std::string_view consoleTittle);
+	extern std::unique_ptr<SyncLogger> createSinkLogger(std::string_view consoleTittle, std::filesystem::path filePath = "");
 };
 
 #endif // EZLOGGER_EZLOGGER_H

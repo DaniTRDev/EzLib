@@ -17,6 +17,7 @@ add_library("EzLogger" ${EZLOGGER_BUILD}
         "src/LogSinks/ExceptionSink.cpp"
         "src/LogSinks/WindowsExceptionSink.cpp"
         "src/OutLogBuffers/ConsoleOutLogBuffer.cpp"
+        "src/OutLogBuffers/FileOutLogBuffer.cpp"
 
         "include/Logger.h"
         "include/EzLogger.h"
@@ -31,6 +32,7 @@ add_library("EzLogger" ${EZLOGGER_BUILD}
         "include/LogSinks/ExceptionSink.h"
         "include/LogSinks/WindowsExceptionSink.h"
         "include/OutLogBuffers/ConsoleOutLogBuffer.h"
+        "include/OutLogBuffers/FileOutLogBuffer.h"
 )
 
 target_include_directories("EzLogger" PUBLIC ${EZLIB_COMMON_PATH})
