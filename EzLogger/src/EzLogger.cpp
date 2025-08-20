@@ -24,7 +24,7 @@ namespace EzLogger
             }
             else
             {
-                sync->pushLog(LogMessage("Could not open out log file!"));
+                sync->pushLog(LogMessage("Could not open out log file at {}", filePath.string()));
             }
             
         }
