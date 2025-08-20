@@ -54,6 +54,7 @@ class ConsoleOutLogBuffer : public IOutLogBuffer
     uint32_t m_originalConsoleMode;
     uint32_t m_originalConsoleOutput;
     uint64_t m_consoleHandle;
+    std::ofstream m_outBuffer; // temporal.
     std::streambuf *m_internalBuffer; // Internal buffer that will write to console.
     std::string_view m_consoleTitle;
 };

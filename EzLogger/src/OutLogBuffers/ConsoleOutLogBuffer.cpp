@@ -25,7 +25,10 @@ bool ConsoleOutLogBuffer::close()
     if (!m_didConsoleExist)
         return FreeConsole(); // Console did not exist before buffer tried opening it.
 #endif
-
+    
+    if (m_outBuffer.is_open())
+        m_outBuffer.close();
+    
     m_internalBuffer = nullptr;
     return true;
 }
@@ -71,14 +74,12 @@ bool ConsoleOutLogBuffer::open()
 
 #endif
     std::ios::sync_with_stdio();
+    m_outBuffer.open("CONOUT$", std::ios_base::out | std::ios_base::app);
 
-    std::ofstream consoleOut;
-    consoleOut.open("CONOUT$", std::ios_base::out | std::ios_base::app);
-
-    if (!consoleOut.is_open())
+    if (!m_outBuffer.is_open() || m_outBuffer.fail())
         m_internalBuffer = std::cout.rdbuf();
     else
-        m_internalBuffer = consoleOut.rdbuf(); // Tell our internal buffer to use cout's.
+        m_internalBuffer = m_outBuffer.rdbuf(); // Tell our internal buffer to use cout's.
 
     if (!m_internalBuffer)
     {

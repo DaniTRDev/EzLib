@@ -17,12 +17,16 @@ namespace EzLogger
         
         if (filePath != "")
         {
-            if (!fileBuff->open())
-                sync->pushLog(LogMessage("Could not open out log file!"));
-            else
+            if (fileBuff->open())
+            {
                 sync->pushLog(LogMessage("Opened log file at {}", filePath.string()));
+                sync->addBuffer(std::move(fileBuff));
+            }
+            else
+            {
+                sync->pushLog(LogMessage("Could not open out log file!"));
+            }
             
-            sync->addBuffer(std::move(fileBuff));
         }
         
 		return std::move(sync);
