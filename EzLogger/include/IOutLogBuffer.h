@@ -40,7 +40,7 @@ class IOutLogBuffer
      * Writes the log message to the out buffer.
      * @param message
      */
-    [[nodiscard]] virtual bool write(LogMessage message) = 0;
+    [[nodiscard]] virtual bool write(const LogMessage &message) = 0;
 };
 
 #endif // EZLOGGER_IOUTLOGBUFFER_H

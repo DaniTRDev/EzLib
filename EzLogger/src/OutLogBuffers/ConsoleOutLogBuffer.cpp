@@ -95,7 +95,7 @@ bool ConsoleOutLogBuffer::opened() const
     return m_internalBuffer;
 }
 
-bool ConsoleOutLogBuffer::write(LogMessage message)
+bool ConsoleOutLogBuffer::write(const LogMessage &message)
 {
     if (!m_internalBuffer)
         return false;

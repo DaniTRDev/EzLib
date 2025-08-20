@@ -44,7 +44,7 @@ class FileOutLogBuffer : public IOutLogBuffer
      * @param message
      * @return bool.
      */
-    [[nodiscard]] bool write(LogMessage message) override;
+    [[nodiscard]] bool write(const LogMessage &message) override;
 
   private:
     std::filesystem::path m_path;

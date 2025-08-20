@@ -26,7 +26,7 @@ bool FileOutLogBuffer::opened() const
     return m_fileStream.is_open();
 }
 
-bool FileOutLogBuffer::write(LogMessage message)
+bool FileOutLogBuffer::write(const LogMessage &message)
 {
     if (!opened())
         return false;

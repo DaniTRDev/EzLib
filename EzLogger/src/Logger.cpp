@@ -18,7 +18,7 @@ bool Logger::pushLog(LogMessage message)
                 throw std::runtime_error("Could not open out buffer!");
         }
 
-        result &= buffer->write(std::move(message));
+        result &= buffer->write(message);
     }
 
     return result;
