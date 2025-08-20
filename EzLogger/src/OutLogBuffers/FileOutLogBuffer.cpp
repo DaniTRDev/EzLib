@@ -17,9 +17,6 @@ bool FileOutLogBuffer::close()
 
 bool FileOutLogBuffer::open()
 {
-    if (!std::filesystem::exists(m_path))
-        return false;
-
     m_fileStream.open(m_path, std::ios::out | std::ios::trunc);
     return m_fileStream.is_open() && m_fileStream.good();
 }
