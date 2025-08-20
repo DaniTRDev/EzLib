@@ -31,7 +31,7 @@ bool FileOutLogBuffer::write(LogMessage message)
     if (!opened())
         return false;
     
-    std::string str = message.getRawMessage();
+    std::string str = message.getRawMessage() + "\n";
     m_fileStream.write(str.data(), str.size());
     m_fileStream.flush();
     
