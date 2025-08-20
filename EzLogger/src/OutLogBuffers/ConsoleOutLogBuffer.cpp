@@ -63,24 +63,24 @@ bool ConsoleOutLogBuffer::open()
         close();
         return false;
     }
-    
-    FILE* fp = nullptr; // Redirect our stdio to the console.
+
+    FILE *fp = nullptr; // Redirect our stdio to the console.
     freopen_s(&fp, "CONOUT$", "w", stdout);
     freopen_s(&fp, "CONOUT$", "w", stderr);
-    freopen_s(&fp, "CONIN$",  "r", stdin);
-    
+    freopen_s(&fp, "CONIN$", "r", stdin);
+
 #endif
     std::ios::sync_with_stdio();
-    
+
     std::ofstream consoleOut;
     consoleOut.open("CONOUT$", std::ios_base::out | std::ios_base::app);
-    
+
     if (!consoleOut.is_open())
         m_internalBuffer = std::cout.rdbuf();
-    
-    m_internalBuffer = consoleOut.rdbuf(); // Tell our internal buffer to use cout's.
-    
-    if(!m_internalBuffer)
+    else
+        m_internalBuffer = consoleOut.rdbuf(); // Tell our internal buffer to use cout's.
+
+    if (!m_internalBuffer)
     {
         close();
         return false;
@@ -98,7 +98,7 @@ bool ConsoleOutLogBuffer::write(LogMessage message)
 {
     if (!m_internalBuffer)
         return false;
-    
+
     std::string messageData = message.getColouredMessage() + "\n";
     std::streamsize written = m_internalBuffer->sputn(messageData.data(), std::streamsize(messageData.length()));
 
