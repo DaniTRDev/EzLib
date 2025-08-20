@@ -63,8 +63,14 @@ bool ConsoleOutLogBuffer::open()
         close();
         return false;
     }
+    
+    FILE* fp = nullptr; // Redirect our stdio to the console.
+    freopen_s(&fp, "CONOUT$", "w", stdout);
+    freopen_s(&fp, "CONOUT$", "w", stderr);
+    freopen_s(&fp, "CONIN$",  "r", stdin);
+    
 #endif
-
+    std::ios::sync_with_stdio();
     m_internalBuffer = std::cout.rdbuf(); // Tell our internal buffer to use cout's.
     if(!m_internalBuffer)
     {
