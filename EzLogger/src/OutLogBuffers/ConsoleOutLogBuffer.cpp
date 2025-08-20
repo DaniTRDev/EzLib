@@ -71,7 +71,12 @@ bool ConsoleOutLogBuffer::open()
     
 #endif
     std::ios::sync_with_stdio();
-    m_internalBuffer = std::cout.rdbuf(); // Tell our internal buffer to use cout's.
+    
+    std::ofstream consoleOut;
+    consoleOut.open("CONOUT$", std::ios_base::out | std::ios_base::app);
+    
+    m_internalBuffer = consoleOut.rdbuf(); // Tell our internal buffer to use cout's.
+    
     if(!m_internalBuffer)
     {
         close();
