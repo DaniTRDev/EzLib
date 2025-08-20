@@ -13,6 +13,7 @@
 #include <queue>
 #include <string_view>
 #include <thread>
+#include <iostream>
 
 #if !defined(NDEBUG)
 #define EZLIB_DEBUG
@@ -55,7 +56,6 @@ namespace OsDependant
 #endif
 
 #ifdef EZLIB_DEBUG
-#include <iostream>
 #endif
 
 #endif
