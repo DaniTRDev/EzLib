@@ -25,10 +25,10 @@ bool ConsoleOutLogBuffer::close()
     if (!m_didConsoleExist)
         return FreeConsole(); // Console did not exist before buffer tried opening it.
 #endif
-    
+
     if (m_outBuffer.is_open())
         m_outBuffer.close();
-    
+
     m_internalBuffer = nullptr;
     return true;
 }
@@ -73,13 +73,15 @@ bool ConsoleOutLogBuffer::open()
     freopen_s(&fp, "CONIN$", "r", stdin);
 
 #endif
+
+#ifdef EZLIB_DEBUG
+    // If we are in debug mode, we must redirect cout directly. This handles integrated terminals not logging anything.
+    m_internalBuffer = std::cout.rdbuf();
+#endif
+    
     std::ios::sync_with_stdio();
     m_outBuffer.open("CONOUT$", std::ios_base::out | std::ios_base::app);
-
-    if (!m_outBuffer.is_open() || m_outBuffer.fail())
-        m_internalBuffer = std::cout.rdbuf();
-    else
-        m_internalBuffer = m_outBuffer.rdbuf(); // Tell our internal buffer to use cout's.
+    m_internalBuffer = m_outBuffer.rdbuf(); // Tell our internal buffer to use cout's.
 
     if (!m_internalBuffer)
     {
