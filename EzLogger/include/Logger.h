@@ -8,6 +8,9 @@
 
 /**
  * A class Logger that defines the log method for the ILogger interface. This will log to our own IOutLogBuffer(s).
+ *
+ * Although this logger is not async, a mutex is needed to ensure that if different threads call pushLog there won't
+ * be any error because of shared execution.
  */
 class Logger : public ILogger
 {
@@ -52,9 +55,9 @@ class Logger : public ILogger
         requires std::is_base_of_v<LogSink, LogSinkT>
     [[nodiscard]] std::shared_ptr<LogSinkT> createSink(SinkArgs &&...args)
     {
-        std::shared_ptr<LogSinkT> ptr = std::make_shared<LogSinkT>(this, std::forward<SinkArgs>(args)...);
-        m_sinks.push_back(ptr);
-        return ptr;
+        std::scoped_lock lock(m_mutex);
+        m_sinks.emplace_back(this, std::forward<SinkArgs>(args)...);
+        return *(m_sinks.end() - 1);
     }
     
     /**
@@ -64,6 +67,7 @@ class Logger : public ILogger
     [[nodiscard]] const std::vector<std::shared_ptr<LogSink>> &getSinks() const;
     
   private:
+    std::mutex m_mutex;
     std::vector<std::shared_ptr<LogSink>> m_sinks;
 };
 

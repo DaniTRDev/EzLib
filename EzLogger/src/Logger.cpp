@@ -8,6 +8,7 @@ Logger::~Logger()
 
 bool Logger::pushLog(LogMessage message)
 {
+    std::scoped_lock lock(m_mutex);
     bool result = true;
 
     for (auto &buffer : m_outBuffers)
@@ -26,11 +27,14 @@ bool Logger::pushLog(LogMessage message)
 
 void Logger::addBuffer(std::unique_ptr<IOutLogBuffer> buffer)
 {
+    std::scoped_lock lock(m_mutex);
     m_outBuffers.push_back(std::move(buffer));
 }
 
 void Logger::swap(Logger *destination)
 {
+    std::scoped_lock lock(m_mutex);
+    
     std::vector<std::shared_ptr<LogSink>> copySinks = destination->getSinks();
     std::vector<std::unique_ptr<IOutLogBuffer>> copyBuff = std::move(destination->m_outBuffers);
 
