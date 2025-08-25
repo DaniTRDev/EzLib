@@ -144,7 +144,7 @@ class LogSegment
      * Appends the colors to the internal color vector.
      * @tparam Args
      * @param colors
-     * @return
+     * @return LogSegment &
      */
     template <typename... Args>
         requires((std::is_same_v<std::decay_t<Args>, SimpleColor> && ...))
