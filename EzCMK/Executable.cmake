@@ -30,7 +30,7 @@ function(EzCMK_AddExecutable)
     set_target_properties(${ARG_NAME} PROPERTIES OUTPUT_NAME "${ARG_NAME}")
 
     if (DEFINED ARG_LINKED_LIBRARIES)
-        target_link_libraries(${ARG_NAME} PRIVATE ${ARG_LINKED_LIBRARIES})
+        target_link_libraries(${ARG_NAME} PUBLIC ${ARG_LINKED_LIBRARIES})
         message(VERBOSE "Executable dependencies: ${ARG_LINKED_LIBRARIES}")
     endif ()
 
@@ -41,12 +41,12 @@ function(EzCMK_AddExecutable)
 
     if (DEFINED ARG_DEFINITIONS)
         message(VERBOSE "Definitions: ${ARG_DEFINITIONS}")
-        target_compile_definitions(${ARG_NAME} PRIVATE ${ARG_DEFINITIONS})
+        target_compile_definitions(${ARG_NAME} PUBLIC ${ARG_DEFINITIONS})
     endif ()
 
     if (DEFINED ARG_PRECOMPILED_HEADER)
         message(VERBOSE "Precompiled header: ${ARG_PRECOMPILED_HEADER}")
-        target_precompile_headers(${ARG_NAME} PRIVATE ${ARG_PRECOMPILED_HEADER})
+        target_precompile_headers(${ARG_NAME} PUBLIC ${ARG_PRECOMPILED_HEADER})
     endif ()
 endfunction()
 
