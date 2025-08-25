@@ -1,16 +1,23 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.28)
 project(EzLib)
 
 set(CMAKE_CXX_STANDARD 23)
-set(EZLIB_COMMON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Common" CACHE STRING "Path to Common.h directory used by EzLib modules" FORCE)
+set(EZLIB_COMMON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Common" CACHE STRING "Path to Common directory used by EzLib modules" FORCE)
 
-option(EZLIB_BUILD_TESTS "Builds tests for EzLib" ON)
+option(EZLIB_BUILD_TESTS "Builds tests for EzLib" OFF)
 option(EZLIB_BUILD_STATIC "Build EzLib and its components as STATIC libraries" ON)
 
+# Bootstrap at the beginning.
+add_subdirectory(EzCMK)
+
 if (EZLIB_BUILD_TESTS)
-    message(STATUS "Enabling CTest on EzLib")
-    include("CMake/Tests.cmake")
-    enable_testing()
+    EzCMK_EnableTestsForProject(EzLib)
+endif ()
+
+if (EZLIB_BUILD_STATIC)
+    EzCMK_SetLibraryBuildType("STATIC")
+else ()
+    EzCMK_SetLibraryBuildType("SHARED")
 endif ()
 
 add_subdirectory("EzLogger")

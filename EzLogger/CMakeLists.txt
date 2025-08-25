@@ -1,12 +1,4 @@
-set(EZLOGGER_BUILD "SHARED")
-
-if (EZLIB_BUILD_STATIC)
-    set(EZLOGGER_BUILD "STATIC")
-endif()
-
-message(STATUS "Building EzLogger as ${EZLOGGER_BUILD}")
-
-add_library("EzLogger" ${EZLOGGER_BUILD}
+set(EZLOGGER_FILE_LIST
         "src/Logger.cpp"
         "src/LogSink.cpp"
         "src/EzLogger.cpp"
@@ -35,10 +27,10 @@ add_library("EzLogger" ${EZLOGGER_BUILD}
         "include/OutLogBuffers/FileOutLogBuffer.h"
 )
 
-target_include_directories("EzLogger" PUBLIC ${EZLIB_COMMON_PATH})
-target_include_directories("EzLogger" PUBLIC "include")
+EzCMK_ConfigureLib(NAME "EzLogger"
+        FILE_LIST ${EZLOGGER_FILE_LIST}
+        INCLUDED_DIRS "${EZLIB_COMMON_PATH}" "include"
+        PRECOMPILED_HEADER ${EZLIB_COMMON_PATH}/EzLibCommon.h
+)
 
-if (EZLIB_BUILD_TESTS)
-    message(STATUS "Adding tests for EzLogger")
-    add_subdirectory(tests) # Build tests (only if set)
-endif ()
+add_subdirectory(tests) # Build tests (only if set)

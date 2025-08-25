@@ -1,0 +1,2 @@
+This project is intended to write a common API that I'll be using in my projects to create or modify CMake projects.
+This allows the abstraction of CMake itself and allows keeping the same API while changing its internal behavior.
