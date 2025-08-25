@@ -42,7 +42,7 @@ function(EzCMK_AddTest)
         message(STATUS "Adding test ${ARG_TEST_NAME} for ${ARG_TESTED_TARGET}")
         EzCMK_AddExecutable(NAME ${TEST_TARGET_NAME}
                 FILE_LIST ${ARG_TEST_FILES}
-                LINKED_LIBRARIES "${ARG_TESTED_TARGET} ${ARG_TEST_LIBRARIES}")
+                LINKED_LIBRARIES "${ARG_TESTED_TARGET};${ARG_TEST_LIBRARIES}")
 
         add_test(NAME ${ARG_TEST_NAME} COMMAND ${TEST_TARGET_NAME})
     endif ()
