@@ -56,8 +56,10 @@ class Logger : public ILogger
     [[nodiscard]] std::shared_ptr<LogSinkT> createSink(SinkArgs &&...args)
     {
         std::scoped_lock lock(m_mutex);
-        m_sinks.emplace_back(this, std::forward<SinkArgs>(args)...);
-        return *(m_sinks.end() - 1);
+        std::shared_ptr<LogSinkT> ptr = std::make_shared<LogSinkT>(this, std::forward<SinkArgs>(args)...);
+        
+        m_sinks.push_back(ptr);
+        return ptr;
     }
     
     /**
