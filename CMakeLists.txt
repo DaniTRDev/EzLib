@@ -9,6 +9,7 @@ option(EZLIB_BUILD_STATIC "Build EzLib and its components as STATIC libraries" O
 
 # Bootstrap at the beginning.
 add_subdirectory(EzCMK)
+EzCMK_Bootstrap()
 
 if (EZLIB_BUILD_TESTS)
     EzCMK_EnableTestsForProject(EzLib)

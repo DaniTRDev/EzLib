@@ -12,9 +12,13 @@ function(EzCMK_AddExecutable)
     set(multiValueArgs FILE_LIST LINKED_LIBRARIES INCLUDED_DIRS DEFINITIONS)
     cmake_parse_arguments("ARG" "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    EzCMK_CreateTarget(NAME ${ARG_NAME}
-            TARGET_DIR_PATH ${CMAKE_CURRENT_SOURCE_DIR}
-    )
+    if (DEFINED ARG_FORCE_CREATION)
+        if (ARG_FORCE_CREATION)
+            EzCMK_CreateTarget(NAME ${ARG_NAME}
+                    TARGET_DIR_PATH ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+        endif ()
+    endif ()
     EzCMK_GetExecutableTargetName(${ARG_NAME} TARGET_NAME)
 
     message(STATUS "Configuring executable ${ARG_NAME} (target: ${TARGET_NAME})")

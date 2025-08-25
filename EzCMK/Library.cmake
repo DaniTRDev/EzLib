@@ -33,13 +33,17 @@ endfunction()
 # If SHARED_LIB is not set, it will use the value of EZCMK_BUILD_SHARED_LIBS.
 function(EzCMK_ConfigureLib)
     set(options)  # no boolean switches
-    set(oneValueArgs NAME PRECOMPILED_HEADER BUILD_TYPE)
+    set(oneValueArgs NAME PRECOMPILED_HEADER BUILD_TYPE FORCE_CREATION)
     set(multiValueArgs FILE_LIST LINKED_LIBRARIES INCLUDED_DIRS DEFINITIONS)
     cmake_parse_arguments("ARG" "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    EzCMK_CreateTarget(NAME ${ARG_NAME}
-            TARGET_DIR_PATH ${CMAKE_CURRENT_SOURCE_DIR}
-    )
+    if (DEFINED ARG_FORCE_CREATION)
+        if (ARG_FORCE_CREATION)
+            EzCMK_CreateTarget(NAME ${ARG_NAME}
+                    TARGET_DIR_PATH ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+        endif ()
+    endif ()
     EzCMK_GetLibraryTargetName(${ARG_NAME} TARGET_NAME)
     EzCMK_GetLibraryBuildType(OUT_VAR TARGET_BUILD_TYPE
             FORCE_VALUE ${ARG_BUILD_TYPE}
