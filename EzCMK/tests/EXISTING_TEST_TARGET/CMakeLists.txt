@@ -1,0 +1,1 @@
+set(EXISTING_TEST_TARGET_CREATED_INTERNAL ON PARENT_SCOPE) # Used to really check the result of the test.
