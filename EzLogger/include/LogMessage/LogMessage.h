@@ -39,6 +39,12 @@ class LogMessage
     ~LogMessage();
 
     /**
+     * Returns true if this LogMessage was default constructed (no segments) and false other ways.
+     * @return bool
+     */
+    [[nodiscard]] bool isEmpty() const;
+
+    /**
      * Adds other's message content into this IGNORING OTHER'S PREFIX. WARNING: This COPIES the content of msg.
      * @param msg
      * @return LogMessage &
