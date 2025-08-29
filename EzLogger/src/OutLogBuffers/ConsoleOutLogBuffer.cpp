@@ -77,11 +77,11 @@ bool ConsoleOutLogBuffer::open()
 #ifdef EZLIB_DEBUG
     // If we are in debug mode, we must redirect cout directly. This handles integrated terminals not logging anything.
     m_internalBuffer = std::cout.rdbuf();
-#endif
-    
+#else
     std::ios::sync_with_stdio();
     m_outBuffer.open("CONOUT$", std::ios_base::out | std::ios_base::app);
     m_internalBuffer = m_outBuffer.rdbuf(); // Tell our internal buffer to use cout's.
+#endif
 
     if (!m_internalBuffer)
     {
