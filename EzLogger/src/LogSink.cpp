@@ -38,24 +38,24 @@ void LogSink::setLogger(ILogger *logger)
 
 void LogSink::logDebug(LogMessage msg)
 {
-    msg.setPrefix(std::move(LogSegment("DEBUG").colorize(Colors::blue)));
+    msg.setPrefix(std::move(LogSegment("DEBUG ").colorize(Colors::blue)));
     pushLog(std::move(msg));
 }
 
 void LogSink::logError(LogMessage msg)
 {
-    msg.setPrefix(std::move(LogSegment("ERROR").colorize(Colors::red)));
+    msg.setPrefix(std::move(LogSegment("ERROR ").colorize(Colors::red)));
     pushLog(std::move(msg));
 }
 
 void LogSink::logInfo(LogMessage msg)
 {
-    msg.setPrefix(std::move(LogSegment("DEBUG").colorize(Colors::cyan)));
+    msg.setPrefix(std::move(LogSegment("INFO ").colorize(Colors::cyan)));
     pushLog(std::move(msg));
 }
 
 void LogSink::logWarn(LogMessage msg)
 {
-    msg.setPrefix(std::move(LogSegment("DEBUG").colorize(Colors::yellow)));
+    msg.setPrefix(std::move(LogSegment("WARNING ").colorize(Colors::yellow)));
     pushLog(std::move(msg));
 }
