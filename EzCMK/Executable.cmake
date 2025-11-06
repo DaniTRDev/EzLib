@@ -13,7 +13,7 @@ function(EzCMK_AddExecutable)
     cmake_parse_arguments("ARG" "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if (DEFINED ARG_FORCE_CREATION)
-        if (ARG_FORCE_CREATION)
+        if (NOT ARG_FORCE_CREATION STREQUAL "")
             EzCMK_CreateTarget(NAME ${ARG_NAME}
                     TARGET_DIR_PATH ${CMAKE_CURRENT_SOURCE_DIR}
             )

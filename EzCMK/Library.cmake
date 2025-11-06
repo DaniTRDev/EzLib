@@ -12,7 +12,7 @@ function(EzCMK_GetLibraryBuildType)
     cmake_parse_arguments("ARG" "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if (DEFINED ARG_FORCE_VALUE)
-        if (ARG_FORCE_VALUE NOT EQUAL "")
+        if (NOT ARG_FORCE_VALUE STREQUAL "")
             set(${ARG_OUT_VAR} ${ARG_FORCE_VALUE} PARENT_SCOPE)
         endif ()
     else ()
