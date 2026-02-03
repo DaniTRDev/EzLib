@@ -38,8 +38,10 @@ void LogSink::setLogger(ILogger *logger)
 
 void LogSink::logDebug(LogMessage msg)
 {
+#ifdef EZLOGGER_ENABLE_DEBUG_LOG
     msg.setPrefix(std::move(LogSegment("DEBUG ").colorize(Colors::blue)));
     pushLog(std::move(msg));
+#endif
 }
 
 void LogSink::logError(LogMessage msg)

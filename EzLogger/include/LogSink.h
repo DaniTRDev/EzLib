@@ -6,8 +6,8 @@
 #include "ILogger.h"
 
 /**
- * Represents a basic sink of log messages. At the moment sink only sets the prefix of the log messages sent to them.
- * But its functionality might be augmented in a future.
+ * Represents a basic sink of log messages. If debug messages want to be shown, EZLOGGER_ENABLE_DEBUG_LOG macro should
+ * be defined.
  */
 class LogSink : public ILogSink
 {
