@@ -2,7 +2,7 @@
 
 namespace EzLogger
 {
-	std::unique_ptr<SyncLogger> createSinkLogger(std::string_view consoleTittle, std::filesystem::path filePath)
+	std::unique_ptr<SyncLogger> createSyncLogger(std::string_view consoleTittle, std::filesystem::path filePath)
 	{
         std::unique_ptr<ConsoleOutLogBuffer> consoleBuff = std::make_unique<ConsoleOutLogBuffer>(consoleTittle);
         std::unique_ptr<FileOutLogBuffer> fileBuff = std::make_unique<FileOutLogBuffer>(filePath);

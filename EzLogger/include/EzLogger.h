@@ -17,7 +17,7 @@
 
 namespace EzLogger
 {
-	extern std::unique_ptr<SyncLogger> createSinkLogger(std::string_view consoleTittle, std::filesystem::path filePath = "");
+	extern std::unique_ptr<SyncLogger> createSyncLogger(std::string_view consoleTittle, std::filesystem::path filePath = "");
 };
 
 #endif // EZLOGGER_EZLOGGER_H

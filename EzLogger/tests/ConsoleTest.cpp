@@ -185,7 +185,7 @@ int main()
 {
 	try
 	{
-		logger = EzLogger::createSinkLogger("TEST");
+		logger = EzLogger::createSyncLogger("TEST");
 		std::shared_ptr<LogSink> testSink = logger->createSink<LogSink>(LogSegment("TEST_SYNC").colorize(Colors::red));
 
 #ifdef EZLIB_WORKING_WINDOWS
