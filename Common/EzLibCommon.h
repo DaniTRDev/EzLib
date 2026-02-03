@@ -1,6 +1,5 @@
 #ifndef EZLIB_COMMON_INCLUDE
 #define EZLIB_COMMON_INCLUDE
-// This file will be used by more than 1 library, hence it's not following the typical EZLOGGER_..._H pattern.
 
 #include <chrono>
 #include <csignal>

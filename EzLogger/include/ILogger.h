@@ -21,7 +21,18 @@ class ILogger
      * @return bool
      */
     virtual bool pushLog(class LogMessage message) = 0;
-    
+
+    /**
+     * Returns true if debug logging is enabled for this logger.
+     * @return bool
+     */
+    virtual bool isDebugLoggingEnabled() = 0;
+
+    /**
+     * Enables debug logging.
+     */
+    virtual void enableDebugLogging() = 0;
+
   protected:
     std::vector<std::unique_ptr<class IOutLogBuffer>> m_outBuffers;
     // Buffers in which each pushLog message will be written into.

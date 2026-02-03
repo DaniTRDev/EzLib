@@ -15,7 +15,6 @@
 class Logger : public ILogger
 {
   public:
-    
     /**
      * Destroys the object.
      */
@@ -31,18 +30,29 @@ class Logger : public ILogger
     bool pushLog(LogMessage message) override;
 
     /**
+     * Returns true if debug logging is enabled.
+     * @return bool
+     */
+    bool isDebugLoggingEnabled() override;
+
+    /**
      * Adds the buffer to the out buffer list.
      * @param buffer
      */
     void addBuffer(std::unique_ptr<IOutLogBuffer> buffer);
-    
+
+    /**
+     * Enables debug logging.
+     */
+    void enableDebugLogging() override;
+
     /**
      * Swaps this->m_sinks and out buffer with destination. Can be used to clear sinks and logger if called
      * with an empty vector (Not recommended...).
      * @param destination
      */
     void swap(Logger *destination);
-    
+
     /**
      * Creates a sink of given type with given arguments. This might be converted into a "SinkFactory" in a future.
      * IMPORTANT: An ILogger pointer is passed as the FIRST parameter.
@@ -57,18 +67,19 @@ class Logger : public ILogger
     {
         std::scoped_lock lock(m_mutex);
         std::shared_ptr<LogSinkT> ptr = std::make_shared<LogSinkT>(this, std::forward<SinkArgs>(args)...);
-        
+
         m_sinks.push_back(ptr);
         return ptr;
     }
-    
+
     /**
      * Returns the vector of created sinks for this logger.
      * @return const std::vector<std::shared_ptr<LogSink>> &
      */
     [[nodiscard]] const std::vector<std::shared_ptr<LogSink>> &getSinks() const;
-    
+
   private:
+    bool m_debugLog{false};
     std::mutex m_mutex;
     std::vector<std::shared_ptr<LogSink>> m_sinks;
 };

@@ -26,7 +26,7 @@ bool LogSink::pushLog(LogMessage msg)
 
     if (!m_logger)
         return false;
-    
+
     msg.setPrefix(m_prefix);
     return m_logger->pushLog(std::move(msg));
 }
@@ -38,10 +38,11 @@ void LogSink::setLogger(ILogger *logger)
 
 void LogSink::logDebug(LogMessage msg)
 {
-#ifdef EZLOGGER_ENABLE_DEBUG_LOG
+    if (!m_logger->isDebugLoggingEnabled())
+        return;
+
     msg.setPrefix(std::move(LogSegment("DEBUG ").colorize(Colors::blue)));
     pushLog(std::move(msg));
-#endif
 }
 
 void LogSink::logError(LogMessage msg)

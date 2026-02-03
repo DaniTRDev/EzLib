@@ -6,6 +6,11 @@ Logger::~Logger()
     m_outBuffers.clear();
 }
 
+bool Logger::isDebugLoggingEnabled()
+{
+    return m_debugLog;
+}
+
 bool Logger::pushLog(LogMessage message)
 {
     std::scoped_lock lock(m_mutex);
@@ -31,10 +36,15 @@ void Logger::addBuffer(std::unique_ptr<IOutLogBuffer> buffer)
     m_outBuffers.push_back(std::move(buffer));
 }
 
+void Logger::enableDebugLogging()
+{
+    m_debugLog = true;
+}
+
 void Logger::swap(Logger *destination)
 {
     std::scoped_lock lock(m_mutex);
-    
+
     std::vector<std::shared_ptr<LogSink>> copySinks = destination->getSinks();
     std::vector<std::unique_ptr<IOutLogBuffer>> copyBuff = std::move(destination->m_outBuffers);
 
