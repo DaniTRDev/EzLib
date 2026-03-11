@@ -110,7 +110,7 @@ class LogSegment
      * Creates an empty log segment.
      */
     LogSegment();
-    
+
     /**
      * Creates the object with the given text.
      * @param text
@@ -126,7 +126,7 @@ class LogSegment
      */
     template <typename... Args> explicit inline LogSegment(const char *fmt, Args &&...args)
     {
-        m_text = std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
+        m_text = std::vformat(fmt, std::make_format_args(args...));
     }
 
     /**
