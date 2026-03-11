@@ -35,13 +35,12 @@ bool ConsoleOutLogBuffer::close()
 
 bool ConsoleOutLogBuffer::open()
 {
-#ifdef EZLIB_WORKING_WINDOWS
-    /**
-     * Some environments emulate the terminal (console) and our calls to GetStdHandle and AllocConsole | AttachConsole
-     * will return true but nothing will happen if we write to the classical std::ofstream("CONOUT$")
-     */
-    if (m_didConsoleExist = AttachConsole(GetCurrentProcessId()); !m_didConsoleExist)
+#if defined(EZLIB_WORKING_WINDOWS) && !defined(EZLIB_DEBUG)
+    // Use ATTACH_PARENT_PROCESS to attach to the console that launched the app
+    if (m_didConsoleExist = AttachConsole(ATTACH_PARENT_PROCESS); !m_didConsoleExist)
+    {
         AllocConsole();
+    }
 
     m_consoleHandle = uint64_t(GetStdHandle(STD_OUTPUT_HANDLE));
 
@@ -61,7 +60,8 @@ bool ConsoleOutLogBuffer::open()
     SetConsoleMode(HANDLE(m_consoleHandle), newMode);
     SetConsoleOutputCP(CP_UTF8);
 
-    if (m_consoleTitle.empty() || !SetConsoleTitleA(m_consoleTitle.data()))
+    // Only attempt to set the title if it isn't empty, so we don't accidentally fail.
+    if (!m_consoleTitle.empty() && !SetConsoleTitleA(m_consoleTitle.data()))
     {
         close();
         return false;
@@ -72,13 +72,17 @@ bool ConsoleOutLogBuffer::open()
     freopen_s(&fp, "CONOUT$", "w", stderr);
     freopen_s(&fp, "CONIN$", "r", stdin);
 
+    // FIX 3: Clear the error state flags of the C++ standard streams!
+    std::cout.clear();
+    std::cerr.clear();
+    std::cin.clear();
+
 #endif
 
 #ifdef EZLIB_DEBUG
-    // If we are in debug mode, we must redirect cout directly. This handles integrated terminals not logging anything.
+    // If we are in debug mode, we must redirect cout directly.
     m_internalBuffer = std::cout.rdbuf();
 #else
-    std::ios::sync_with_stdio();
     m_outBuffer.open("CONOUT$", std::ios_base::out | std::ios_base::app);
     m_internalBuffer = m_outBuffer.rdbuf(); // Tell our internal buffer to use cout's.
 #endif
