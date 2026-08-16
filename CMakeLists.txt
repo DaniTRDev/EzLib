@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(EzLib)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(EZLIB_COMMON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Common" CACHE STRING "Path to Common directory used by EzLib modules" FORCE)
 
 option(EZLIB_BUILD_TESTS "Builds tests for EzLib" OFF)
